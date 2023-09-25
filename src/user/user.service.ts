@@ -1,0 +1,35 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/entities/User';
+import { Repository } from 'typeorm';
+import { SignUpDto } from './dto/signUp.dot';
+import * as bcrypt from 'bcrypt';
+
+@Injectable()
+export class UserService {
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
+
+  async signUp(signUpDto: SignUpDto) {
+    const { email, nickName, password, university } = signUpDto;
+
+    const isUserExist = await this.userRepository.findOne({ where: { email } });
+
+    if (isUserExist) {
+      throw new NotFoundException('이미 해당 이메일로 가입한 유저가 있습니다.');
+    }
+
+    const hasgedPassword = await bcrypt.hash(password, 10);
+
+    const user = await this.userRepository.save({
+      email: email,
+      nickName: nickName,
+      password: hasgedPassword,
+      university: university,
+    });
+
+    return user;
+  }
+}

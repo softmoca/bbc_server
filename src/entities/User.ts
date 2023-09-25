@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('User', { schema: 'bbc_database' })
 export class User {
@@ -8,7 +14,7 @@ export class User {
   @Column('varchar', { name: 'email', length: 30 })
   email: string;
 
-  @Column('varchar', { name: 'password', length: 30 })
+  @Column('varchar', { name: 'password', length: 300 })
   password: string;
 
   @Column('varchar', { name: 'nickName', length: 30 })
@@ -16,9 +22,6 @@ export class User {
 
   @Column('varchar', { name: 'university', length: 30 })
   university: string;
-
-  @Column('varchar', { name: 'phone', length: 11 })
-  phone: string;
 
   @Column('decimal', {
     name: 'longitude',
@@ -39,9 +42,9 @@ export class User {
   @Column('text', { name: 'profileImage', nullable: true })
   profileImage: string | null;
 
-  @Column('datetime', { name: 'createdAt' })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column('datetime', { name: 'updatedAt' })
+  @UpdateDateColumn()
   updatedAt: Date;
 }

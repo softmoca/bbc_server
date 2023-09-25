@@ -1,15 +1,11 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/User';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerMiddleware } from './middleware/logger.middleware';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -26,6 +22,7 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
       //logging: true,
       charset: 'utf8mb4',
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
