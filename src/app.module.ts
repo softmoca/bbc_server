@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+//import { Post } from './entities/Post';
 
 @Module({
   imports: [
