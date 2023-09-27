@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { SignUpDto } from './dto/signUp.dot';
-import { SuccessInterceptor } from 'src/success.interceptor';
+import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 
 @Controller('user')
 @UseInterceptors(SuccessInterceptor)
