@@ -15,10 +15,20 @@ export class UserService {
   async signUp(signUpDto: SignUpDto) {
     const { email, nickName, password, university } = signUpDto;
 
-    const isUserExist = await this.userRepository.findOne({ where: { email } });
+    const isUserEmailExist = await this.userRepository.findOne({
+      where: { email },
+    });
+    const isUserNickNamelExist = await this.userRepository.findOne({
+      where: { nickName },
+    });
 
-    if (isUserExist) {
+    if (isUserEmailExist) {
       throw new NotFoundException('이미 해당 이메일로 가입한 유저가 있습니다.');
+    }
+    if (isUserNickNamelExist) {
+      throw new NotFoundException(
+        '이미 해당 닉네임으로 가입한 유저가 있습니다.',
+      );
     }
 
     const hasgedPassword = await bcrypt.hash(password, 10);
