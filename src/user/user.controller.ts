@@ -13,6 +13,8 @@ import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor'
 import { SignInDto } from './dto/signIn.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
+import { User } from 'src/entities/User';
+import { CurrentUser } from 'src/common/decorators/user.decorator';
 
 @Controller('user')
 @UseInterceptors(SuccessInterceptor)
@@ -34,7 +36,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  guardTest(@Req() req: Request) {
-    console.log('req', req);
+  guardTest(@CurrentUser() user: User) {
+    return user;
   }
 }
