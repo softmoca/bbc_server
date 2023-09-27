@@ -1,9 +1,18 @@
-import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { SignUpDto } from './dto/signUp.dto';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { SignInDto } from './dto/signIn.dto';
 import { AuthService } from 'src/auth/auth.service';
+import { JwtAuthGuard } from 'src/auth/jwt.guard';
 
 @Controller('user')
 @UseInterceptors(SuccessInterceptor)
@@ -21,5 +30,11 @@ export class UserController {
   @Post('/localSignIn')
   async localSignIn(@Body() signInDto: SignInDto) {
     return this.authService.localSignIn(signInDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  guardTest(@Req() req: Request) {
+    console.log('req', req);
   }
 }
