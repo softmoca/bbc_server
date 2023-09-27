@@ -2,13 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('Post', { schema: 'bbc_database' })
 export class Post {
-  @PrimaryColumn({ type: 'int', name: 'postIdx' })
+  @PrimaryGeneratedColumn({ type: 'int', name: 'postIdx' })
   postIdx: number;
 
   @Column('varchar', { name: 'postTitle', length: 30 })

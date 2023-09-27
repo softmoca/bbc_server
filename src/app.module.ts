@@ -7,7 +7,8 @@ import { ConfigModule } from '@nestjs/config';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-//import { Post } from './entities/Post';
+import { Post } from './entities/Post';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -19,13 +20,14 @@ import { AuthModule } from './auth/auth.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User],
+      entities: [User, Post],
       synchronize: true,
       //logging: true,
       charset: 'utf8mb4',
     }),
     UserModule,
     AuthModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],
