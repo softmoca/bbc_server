@@ -20,6 +20,12 @@ export class CommentService {
     if (!post) {
       throw new NotFoundException(`Post with ID ${postIdx} not found`);
     }
+
+    const comment = await this.commentRepository.find({
+      where: { CommentPostIdx: postIdx },
+    });
+
+    return comment;
   }
 
   async createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
