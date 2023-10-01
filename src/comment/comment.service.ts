@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Comment } from 'src/entities/Comment';
 import { Post } from 'src/entities/Post';
+import { UpdateCommentDto } from './dto/updateComment.dto';
 
 @Injectable()
 export class CommentService {
@@ -18,7 +19,7 @@ export class CommentService {
     const post = await this.postRepository.findOne({ where: { postIdx } });
 
     if (!post) {
-      throw new NotFoundException(`Post with ID ${postIdx} not found`);
+      throw new NotFoundException(`Comment with ID ${postIdx} not found`);
     }
 
     const comment = await this.commentRepository.find({
@@ -36,5 +37,32 @@ export class CommentService {
     comment.CommentPostIdx = CommentPostIdx;
 
     return await this.commentRepository.save(comment);
+  }
+
+  async updateComment(
+    commentIdx: number,
+    updataCommentDto: UpdateCommentDto,
+  ): Promise<Comment> {
+    const commnet = await this.commentRepository.findOne({
+      where: { commentIdx },
+    });
+
+    const { commentContent } = updataCommentDto;
+
+    commnet.commentContent = commentContent;
+
+    return await this.commentRepository.save(commnet);
+  }
+
+  async deleteComment(commentIdx: number): Promise<Comment> {
+    const commnet = await this.commentRepository.findOne({
+      where: { commentIdx },
+    });
+
+    if (!commnet) {
+      throw new NotFoundException(`Comment with ID ${commentIdx} not found`);
+    }
+    await this.commentRepository.delete(commentIdx);
+    return commnet;
   }
 }
