@@ -34,7 +34,7 @@ export class PostController {
   }
 
   @Patch(':postIdx')
-  async update(
+  async updatePost(
     @Param('postIdx') postIdx: number,
     @Body() updataPostDto: UpdatePostDto,
   ) {
@@ -44,6 +44,6 @@ export class PostController {
   @Delete(':postIdx')
   async delete(@Param('postIdx') postIdx: number) {
     console.log('sd');
-    return await this.postService.delete(postIdx);
+    return await this.postService.deletePost(postIdx);
   }
 }
