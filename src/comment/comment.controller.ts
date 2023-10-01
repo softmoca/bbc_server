@@ -1,4 +1,11 @@
-import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { CreateCommentDto } from './dto/createComment.dto';
 import { CommentService } from './comment.service';
@@ -7,6 +14,11 @@ import { CommentService } from './comment.service';
 @UseInterceptors(SuccessInterceptor)
 export class CommentController {
   constructor(private commentService: CommentService) {}
+
+  @Get('/:postIdx')
+  findAllComment(@Param('postIdx') postIdx: number) {
+    return this.commentService.findAllComment(postIdx);
+  }
 
   @Post()
   async createComment(@Body() createPostDto: CreateCommentDto) {

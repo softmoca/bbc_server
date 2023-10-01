@@ -11,8 +11,11 @@ import { Post } from './Post';
 
 @Entity('Comment', { schema: 'bbc_database' })
 export class Comment {
-  @PrimaryGeneratedColumn({ type: 'int', name: 'postIdx' })
+  @PrimaryGeneratedColumn({ type: 'int', name: 'commentIdx' })
   commentIdx: number;
+
+  @Column('int', { name: 'CommentPostIdx', nullable: true })
+  CommentPostIdx: number | null;
 
   @Column('varchar', { name: 'comment', length: 100 })
   commentContent: string;
