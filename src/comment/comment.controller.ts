@@ -10,6 +10,6 @@ export class CommentController {
 
   @Post()
   async createComment(@Body() createPostDto: CreateCommentDto) {
-    return this.commentService.createPost(createPostDto);
+    return this.commentService.createComment(createPostDto);
   }
 }

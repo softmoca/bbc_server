@@ -11,7 +11,7 @@ export class CommentService {
     private readonly commentRepository: Repository<Comment>,
   ) {}
 
-  async createPost(createCommentDto: CreateCommentDto): Promise<Comment> {
+  async createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
     const { commentContent } = createCommentDto;
     const comment = new Comment();
 
