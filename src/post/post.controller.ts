@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -38,5 +39,11 @@ export class PostController {
     @Body() updataPostDto: UpdatePostDto,
   ) {
     return await this.postService.updatePost(postIdx, updataPostDto);
+  }
+
+  @Delete(':postIdx')
+  async delete(@Param('postIdx') postIdx: number) {
+    console.log('sd');
+    return await this.postService.delete(postIdx);
   }
 }
