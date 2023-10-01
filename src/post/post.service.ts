@@ -37,6 +37,7 @@ export class PostService {
 
     return await this.postRepository.save(post);
   }
+
   async updatePost(
     postIdx: number,
     updataPostDto: UpdatePostDto,

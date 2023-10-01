@@ -12,7 +12,7 @@ export class Comment {
   commentIdx: number;
 
   @Column('varchar', { name: 'comment', length: 100 })
-  comment: string;
+  commentContent: string;
 
   @Column('boolean', { name: 'commentAnonymous', default: true })
   commentAnonymous: boolean;
