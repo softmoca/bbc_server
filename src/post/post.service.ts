@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from 'src/entities/Post';
 import { Repository } from 'typeorm';
 import { CreatePostDto } from './dto/createPost.dto';
+import { UpdatePostDto } from './dto/updatePost.dto';
 
 @Injectable()
 export class PostService {
@@ -33,6 +34,21 @@ export class PostService {
     post.buildingName = buildingName;
     post.chatRoomTitle = chatRoomTitle;
     post.postContent = postContent;
+
+    return await this.postRepository.save(post);
+  }
+  async updatePost(
+    postIdx: number,
+    updataPostDto: UpdatePostDto,
+  ): Promise<Post> {
+    const post = await this.getOnePost(postIdx);
+    const { postTitle, postContent, buildingName, chatRoomTitle } =
+      updataPostDto;
+
+    post.postTitle = postTitle;
+    post.postContent = postContent;
+    post.buildingName = buildingName;
+    post.chatRoomTitle = chatRoomTitle;
 
     return await this.postRepository.save(post);
   }
