@@ -20,8 +20,8 @@ export class User {
   @Column('varchar', { name: 'nickName', length: 30 })
   nickName: string;
 
-  @Column('varchar', { name: 'university', length: 30 })
-  university: string;
+  @Column('varchar', { name: 'university', length: 30, nullable: true })
+  university: string | null;
 
   @Column('decimal', {
     name: 'longitude',

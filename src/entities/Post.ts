@@ -28,8 +28,8 @@ export class Post {
   @Column('int', { name: 'postLike', default: 0 })
   postLike: number;
 
-  @Column('varchar', { name: 'buildingName', length: 20 })
-  buildingName: string;
+  @Column('varchar', { name: 'buildingName', nullable: true, length: 20 })
+  buildingName: string | null;
 
   @Column('varchar', { name: 'chatRoomTitle', length: 20 })
   chatRoomTitle: string;
