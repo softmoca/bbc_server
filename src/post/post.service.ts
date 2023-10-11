@@ -16,6 +16,14 @@ export class PostService {
     return await this.postRepository.find();
   }
 
+  async getDormitoryPost(): Promise<Post[]> {
+    return await this.postRepository.find({
+      where: {
+        buildingName: '기숙사(빛솔재)',
+      },
+    });
+  }
+
   async getOnePost(postIdx: number): Promise<Post> {
     const post = await this.postRepository.findOne({ where: { postIdx } });
 

@@ -23,6 +23,11 @@ export class PostController {
     return this.postService.getAllPost();
   }
 
+  @Get('/dormitory')
+  getDormitoryPost() {
+    return this.postService.getDormitoryPost();
+  }
+
   @Get(':postIdx')
   getOnePost(@Param('postIdx') postIdx: number) {
     return this.postService.getOnePost(postIdx);
