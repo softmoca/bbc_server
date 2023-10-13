@@ -28,6 +28,11 @@ export class PostController {
     return this.postService.getDormitoryPost();
   }
 
+  @Get('/bima')
+  getBimaPost() {
+    return this.postService.getBimaPost();
+  }
+
   @Get(':postIdx')
   getOnePost(@Param('postIdx') postIdx: number) {
     return this.postService.getOnePost(postIdx);
