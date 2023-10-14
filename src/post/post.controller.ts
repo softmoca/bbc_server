@@ -53,6 +53,21 @@ export class PostController {
     return this.postService.getTheaterPost();
   }
 
+  @Get('/hanul')
+  getHanulPost() {
+    return this.postService.getHanulPost();
+  }
+
+  @Get('/saebit')
+  getSaebitPost() {
+    return this.postService.getSaebitPost();
+  }
+
+  @Get('/hwado')
+  getHwadoPost() {
+    return this.postService.getHwadoPost();
+  }
+
   @Get(':postIdx')
   getOnePost(@Param('postIdx') postIdx: number) {
     return this.postService.getOnePost(postIdx);

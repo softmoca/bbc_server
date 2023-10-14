@@ -64,6 +64,30 @@ export class PostService {
     });
   }
 
+  async getHanulPost(): Promise<Post[]> {
+    return await this.postRepository.find({
+      where: {
+        buildingName: '한울관',
+      },
+    });
+  }
+
+  async getSaebitPost(): Promise<Post[]> {
+    return await this.postRepository.find({
+      where: {
+        buildingName: '새빛관',
+      },
+    });
+  }
+
+  async getHwadoPost(): Promise<Post[]> {
+    return await this.postRepository.find({
+      where: {
+        buildingName: '화도관',
+      },
+    });
+  }
+
   async getOnePost(postIdx: number): Promise<Post> {
     const post = await this.postRepository.findOne({ where: { postIdx } });
 
