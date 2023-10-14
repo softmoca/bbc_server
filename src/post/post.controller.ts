@@ -48,6 +48,11 @@ export class PostController {
     return this.postService.getChambitPost();
   }
 
+  @Get('/theater')
+  getTheaterPost() {
+    return this.postService.getTheaterPost();
+  }
+
   @Get(':postIdx')
   getOnePost(@Param('postIdx') postIdx: number) {
     return this.postService.getOnePost(postIdx);
