@@ -68,6 +68,16 @@ export class PostController {
     return this.postService.getHwadoPost();
   }
 
+  @Get('/okui')
+  getOkuiPost() {
+    return this.postService.getOkuiPost();
+  }
+
+  @Get('/nuri')
+  getNuriPost() {
+    return this.postService.getNuriPost();
+  }
+
   @Get(':postIdx')
   getOnePost(@Param('postIdx') postIdx: number) {
     return this.postService.getOnePost(postIdx);

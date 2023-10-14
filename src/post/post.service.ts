@@ -88,6 +88,22 @@ export class PostService {
     });
   }
 
+  async getOkuiPost(): Promise<Post[]> {
+    return await this.postRepository.find({
+      where: {
+        buildingName: '옥의관',
+      },
+    });
+  }
+
+  async getNuriPost(): Promise<Post[]> {
+    return await this.postRepository.find({
+      where: {
+        buildingName: '누리관',
+      },
+    });
+  }
+
   async getOnePost(postIdx: number): Promise<Post> {
     const post = await this.postRepository.findOne({ where: { postIdx } });
 
