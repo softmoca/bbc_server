@@ -43,6 +43,11 @@ export class PostController {
     return this.postService.getCenterLibraryPost();
   }
 
+  @Get('/chambit')
+  getChambitPost() {
+    return this.postService.getChambitPost();
+  }
+
   @Get(':postIdx')
   getOnePost(@Param('postIdx') postIdx: number) {
     return this.postService.getOnePost(postIdx);
