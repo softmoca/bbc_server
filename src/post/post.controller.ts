@@ -33,6 +33,11 @@ export class PostController {
     return this.postService.getBimaPost();
   }
 
+  @Get('/bokji')
+  getBokjiPost() {
+    return this.postService.getBokjiPost();
+  }
+
   @Get(':postIdx')
   getOnePost(@Param('postIdx') postIdx: number) {
     return this.postService.getOnePost(postIdx);

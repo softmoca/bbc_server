@@ -32,6 +32,14 @@ export class PostService {
     });
   }
 
+  async getBokjiPost(): Promise<Post[]> {
+    return await this.postRepository.find({
+      where: {
+        buildingName: '복지관',
+      },
+    });
+  }
+
   async getOnePost(postIdx: number): Promise<Post> {
     const post = await this.postRepository.findOne({ where: { postIdx } });
 
