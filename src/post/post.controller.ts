@@ -38,6 +38,11 @@ export class PostController {
     return this.postService.getBokjiPost();
   }
 
+  @Get('/centerLibrary')
+  getCenterLibraryPost() {
+    return this.postService.getCenterLibraryPost();
+  }
+
   @Get(':postIdx')
   getOnePost(@Param('postIdx') postIdx: number) {
     return this.postService.getOnePost(postIdx);

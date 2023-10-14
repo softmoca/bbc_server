@@ -40,6 +40,14 @@ export class PostService {
     });
   }
 
+  async getCenterLibraryPost(): Promise<Post[]> {
+    return await this.postRepository.find({
+      where: {
+        buildingName: '중앙 도서관',
+      },
+    });
+  }
+
   async getOnePost(postIdx: number): Promise<Post> {
     const post = await this.postRepository.findOne({ where: { postIdx } });
 
