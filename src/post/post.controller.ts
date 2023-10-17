@@ -14,6 +14,7 @@ import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor'
 import { CreatePostDto } from './dto/createPost.dto';
 import { UpdatePostDto } from './dto/updatePost.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from 'src/common/utils/multer.options';
 
 @Controller('post')
 @UseInterceptors(SuccessInterceptor)
@@ -103,7 +104,7 @@ export class PostController {
     return await this.postService.deletePost(postIdx);
   }
 
-  @UseInterceptors(FilesInterceptor('files'))
+  @UseInterceptors(FilesInterceptor('files', 10, multerOptions('postImage')))
   @Post('image')
   uploadImage(@UploadedFiles() files: Array<Express.Multer.File>) {
     console.log(files);
