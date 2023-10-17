@@ -4,9 +4,15 @@ import { PostService } from './post.service';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from 'src/entities/Post';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post])],
+  imports: [
+    MulterModule.register({
+      dest: './upload',
+    }),
+    TypeOrmModule.forFeature([Post]),
+  ],
   controllers: [PostController],
   providers: [PostService],
 })

@@ -6,12 +6,14 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { CreatePostDto } from './dto/createPost.dto';
 import { UpdatePostDto } from './dto/updatePost.dto';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('post')
 @UseInterceptors(SuccessInterceptor)
@@ -99,5 +101,12 @@ export class PostController {
   @Delete(':postIdx')
   async deletePost(@Param('postIdx') postIdx: number) {
     return await this.postService.deletePost(postIdx);
+  }
+
+  @UseInterceptors(FilesInterceptor('files'))
+  @Post('image')
+  uploadImage(@UploadedFiles() files: Array<Express.Multer.File>) {
+    console.log(files);
+    return 'uplda';
   }
 }
