@@ -108,6 +108,9 @@ export class PostController {
   @Post('image')
   uploadImage(@UploadedFiles() files: Array<Express.Multer.File>) {
     console.log(files);
-    return 'uplda';
+
+    return {
+      image: `http://localhost:3030/media/postImage/${files[0].filename}`,
+    };
   }
 }
