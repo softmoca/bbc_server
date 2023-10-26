@@ -115,13 +115,14 @@ export class PostService {
   }
 
   async createPost(createPostDto: CreatePostDto): Promise<Post> {
-    const { postTitle, postContent, buildingName, chatRoomTitle } =
+    const { postTitle, postContent, buildingName, chatRoomTitle, postImage } =
       createPostDto;
     const post = new Post();
     post.postTitle = postTitle;
     post.buildingName = buildingName;
     post.chatRoomTitle = chatRoomTitle;
     post.postContent = postContent;
+    post.postImage = postImage;
 
     return await this.postRepository.save(post);
   }

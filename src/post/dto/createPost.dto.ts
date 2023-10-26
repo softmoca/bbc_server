@@ -18,4 +18,6 @@ export class CreatePostDto {
   @MaxLength(20)
   @IsNotEmpty()
   chatRoomTitle: string;
+
+  postImage: string;
 }
