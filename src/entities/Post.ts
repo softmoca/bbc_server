@@ -1,15 +1,9 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Comment } from './Comment';
+import { BaseModel } from './base.entity';
 
 @Entity('Post', { schema: 'bbc_database' })
-export class Post {
+export class Post extends BaseModel {
   @PrimaryGeneratedColumn({ type: 'int', name: 'postIdx' })
   postIdx: number;
 
@@ -33,12 +27,6 @@ export class Post {
 
   @Column('varchar', { name: 'chatRoomTitle', length: 20 })
   chatRoomTitle: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 
   @OneToMany(() => Comment, (comments) => comments.Post)
   Comments: Comment[];

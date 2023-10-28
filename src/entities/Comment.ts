@@ -1,16 +1,15 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { Post } from './Post';
+import { BaseModel } from './base.entity';
 
 @Entity('Comment', { schema: 'bbc_database' })
-export class Comment {
+export class Comment extends BaseModel {
   @PrimaryGeneratedColumn({ type: 'int', name: 'commentIdx' })
   commentIdx: number;
 
@@ -25,12 +24,6 @@ export class Comment {
 
   @Column('int', { name: 'commentLike', default: 0 })
   commentLike: number;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 
   @ManyToOne(() => Post, (post) => post.Comments, {
     onDelete: 'SET NULL',
