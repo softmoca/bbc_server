@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Post } from './Post';
 import { BaseModel } from './base.entity';
+import { Length } from 'class-validator';
 
 @Entity('Comment', { schema: 'bbc_database' })
 export class Comment extends BaseModel {
@@ -16,6 +17,7 @@ export class Comment extends BaseModel {
   @Column('int', { name: 'CommentPostIdx', nullable: true })
   CommentPostIdx: number | null;
 
+  @Length(1, 100)
   @Column('varchar', { name: 'comment', length: 100 })
   commentContent: string;
 
