@@ -1,21 +1,10 @@
-import { IsNotEmpty, MaxLength, MinLength } from 'class-validator';
+import { PickType } from '@nestjs/swagger';
 
-export class UpdatePostDto {
-  @MinLength(4)
-  @MaxLength(20)
-  @IsNotEmpty()
-  postTitle: string;
+import { Post } from 'src/entities/Post';
 
-  @MinLength(1)
-  @MaxLength(200)
-  @IsNotEmpty()
-  postContent: string;
-
-  @IsNotEmpty()
-  buildingName: string;
-
-  @MinLength(4)
-  @MaxLength(20)
-  @IsNotEmpty()
-  chatRoomTitle: string;
-}
+export class UpdatePostDto extends PickType(Post, [
+  'postTitle',
+  'postContent',
+  'buildingName',
+  'chatRoomTitle',
+]) {}

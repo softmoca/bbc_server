@@ -1,15 +1,18 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Comment } from './Comment';
 import { BaseModel } from './base.entity';
+import { Length } from 'class-validator';
 
 @Entity('Post', { schema: 'bbc_database' })
 export class Post extends BaseModel {
   @PrimaryGeneratedColumn({ type: 'int', name: 'postIdx' })
   postIdx: number;
 
+  @Length(1, 20)
   @Column('varchar', { name: 'postTitle', length: 30 })
   postTitle: string;
 
+  @Length(1, 20)
   @Column('varchar', { name: 'postContent', length: 300 })
   postContent: string;
 
@@ -25,6 +28,7 @@ export class Post extends BaseModel {
   @Column('varchar', { name: 'buildingName', nullable: true, length: 20 })
   buildingName: string | null;
 
+  @Length(1, 20)
   @Column('varchar', { name: 'chatRoomTitle', length: 20 })
   chatRoomTitle: string;
 
