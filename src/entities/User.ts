@@ -1,14 +1,9 @@
 import { IsEmail, Length } from 'class-validator';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseModel } from './base.entity';
 
 @Entity('User', { schema: 'bbc_database' })
-export class User {
+export class User extends BaseModel {
   @PrimaryGeneratedColumn({ type: 'int', name: 'userIdx' })
   userIdx: number;
 
@@ -46,10 +41,4 @@ export class User {
 
   @Column('text', { name: 'profileImage', nullable: true })
   profileImage: string | null;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }
