@@ -8,11 +8,11 @@ export class Post extends BaseModel {
   @PrimaryGeneratedColumn({ type: 'int', name: 'postIdx' })
   postIdx: number;
 
-  @Length(1, 20)
+  @Length(1, 30)
   @Column('varchar', { name: 'postTitle', length: 30 })
   postTitle: string;
 
-  @Length(1, 20)
+  @Length(1, 300)
   @Column('varchar', { name: 'postContent', length: 300 })
   postContent: string;
 
