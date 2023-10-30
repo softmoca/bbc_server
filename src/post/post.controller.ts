@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -15,17 +16,22 @@ import { CreatePostDto } from './dto/createPost.dto';
 import { UpdatePostDto } from './dto/updatePost.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/common/utils/multer.options';
+import { PaginatePostDto } from './dto/paginate-post.dto';
 
 @Controller('post')
 @UseInterceptors(SuccessInterceptor)
 export class PostController {
   constructor(private postService: PostService) {}
 
-  @Get()
-  getAllPost() {
-    return this.postService.getAllPost();
-  }
+  // @Get()
+  // getAllPost() {
+  //   return this.postService.getAllPost();
+  // }
 
+  @Get()
+  getPost(@Query() query: PaginatePostDto) {
+    return this.postService.paginatePosts(query);
+  }
   @Get('/dormitory')
   getDormitoryPost() {
     return this.postService.getDormitoryPost();

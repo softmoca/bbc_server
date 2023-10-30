@@ -14,15 +14,21 @@ export class PostService {
   ) {}
 
   async paginatePosts(dto: PaginatePostDto) {
+    console.log(dto);
     const posts = await this.postRepository.find({
       where: {
-        id: MoreThan(dto.where__id__more_than),
+        id: MoreThan(dto.where__id__more_than ?? 0),
       },
       order: {
         createdAt: dto.order__createdAt,
       },
       take: dto.take,
     });
+
+    console.log(dto.where__id__less_than);
+    return {
+      posts,
+    };
   }
 
   async getAllPost(): Promise<Post[]> {
