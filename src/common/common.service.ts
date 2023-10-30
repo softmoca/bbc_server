@@ -89,7 +89,21 @@ export class CommonService {
   private parseOrderFilter<T extends BaseModel>(
     key: string,
     value: string,
-  ): FindOptionsOrder<T> {}
+  ): FindOptionsOrder<T> {
+    const order: FindOptionsOrder<T> = {};
+    // order는 무조건 두개로 스플릿된다.order__createdAt -> ['order', 'createdAt']
+    const split = key.split('__');
+
+    if (split.length !== 2) {
+      throw new BadRequestException(
+        `order 필터는 '__'로 split 했을때 길이가 2여야합니다. - 문제되는 키값 : ${key}`,
+      );
+    }
+
+    const [_, field] = split;
+    order[field] = value;
+    return order;
+  }
 
   private parseWhereFilter<T extends BaseModel>(
     key: string,
