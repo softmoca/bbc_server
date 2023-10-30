@@ -24,8 +24,14 @@ export class PostService {
       take: dto.take,
     });
 
+    const lastItem = posts.length > 0 ? posts[posts.length - 1] : null;
+
     return {
       posts,
+      cursor: {
+        after: lastItem?.id,
+      },
+      count: posts.length,
     };
   }
 
