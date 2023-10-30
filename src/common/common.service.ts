@@ -34,9 +34,21 @@ export class CommonService {
   async pagePaginate<T extends BaseModel>(
     dto: BasePaginationDto,
     repository: Repository<T>,
-
+    // find option 중 강제로 덮어쓰고 싶은 데이터 넣는 곳
     overrideFindOptions: FindManyOptions<T> = {},
-  ) {}
+  ) {
+    const findOptions = this.composeFindOptions<T>(dto);
+
+    const [posts, count] = await repository.findAndCount({
+      ...findOptions,
+      ...overrideFindOptions,
+    });
+
+    return {
+      data: posts,
+      total: count,
+    };
+  }
 
   async cursorPaginate<T extends BaseModel>(
     dto: BasePaginationDto,

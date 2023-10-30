@@ -37,7 +37,7 @@ export class PostController {
 
   @Get()
   getPost(@Query() query: PaginatePostDto) {
-    return this.postService.paginagePosts(query);
+    return this.postService.paginatePosts(query);
   }
   @Get('/dormitory')
   getDormitoryPost() {
