@@ -16,7 +16,14 @@ async function bootstrap() {
     prefix: '/media',
   });
 
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
   app.useGlobalFilters(new HttpExceptionFilter());
   const port = process.env.PORT;
   await app.listen(port);
