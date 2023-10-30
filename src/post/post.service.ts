@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from 'src/entities/Post';
-import { MoreThan, Repository } from 'typeorm';
+import { FindOptionsWhere, LessThan, MoreThan, Repository } from 'typeorm';
 import { CreatePostDto } from './dto/createPost.dto';
 import { UpdatePostDto } from './dto/updatePost.dto';
 import { PaginatePostDto } from './dto/paginate-post.dto';
@@ -15,10 +15,17 @@ export class PostService {
   ) {}
 
   async paginatePosts(dto: PaginatePostDto) {
+    const where: FindOptionsWhere<Post> = {};
+
+    if (dto.where__id__less_than) {
+      where.id = LessThan(dto.where__id__less_than);
+    } else if (dto.where__id__more_than) {
+      where.id = MoreThan(dto.where__id__more_than);
+    }
+
     const posts = await this.postRepository.find({
-      where: {
-        id: MoreThan(dto.where__id__more_than ?? 0),
-      },
+      where,
+
       order: {
         createdAt: dto.order__createdAt,
       },
