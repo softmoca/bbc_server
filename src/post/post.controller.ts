@@ -28,6 +28,13 @@ export class PostController {
   //   return this.postService.getAllPost();
   // }
 
+  @Post('random')
+  async postPostsRandom() {
+    await this.postService.generatePosts();
+
+    return true;
+  }
+
   @Get()
   getPost(@Query() query: PaginatePostDto) {
     return this.postService.paginatePosts(query);

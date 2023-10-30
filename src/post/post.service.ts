@@ -31,6 +31,18 @@ export class PostService {
     };
   }
 
+  async generatePosts() {
+    for (let i = 0; i < 30; i++) {
+      await this.createPost({
+        postTitle: `임의로 생성된 포스트 제목 ${i}`,
+        postContent: `임의로 생성된 포스트 내용 ${i}`,
+        buildingName: '참빛관',
+        chatRoomTitle: `임의로 생성된 채팅방 이름 ${i}`,
+        postImage: 'wewerwer',
+      });
+    }
+  }
+
   async getAllPost(): Promise<Post[]> {
     return await this.postRepository.find();
   }
