@@ -15,15 +15,15 @@ export class CommentService {
     private readonly postRepository: Repository<Post>,
   ) {}
 
-  async findAllComment(postIdx: number) {
-    const post = await this.postRepository.findOne({ where: { postIdx } });
+  async findAllComment(id: number) {
+    const post = await this.postRepository.findOne({ where: { id } });
 
     if (!post) {
-      throw new NotFoundException(`Comment with ID ${postIdx} not found`);
+      throw new NotFoundException(`Comment with ID ${id} not found`);
     }
 
     const comment = await this.commentRepository.find({
-      where: { CommentPostIdx: postIdx },
+      where: { CommentPostIdx: id },
     });
 
     return comment;
@@ -40,11 +40,11 @@ export class CommentService {
   }
 
   async updateComment(
-    commentIdx: number,
+    id: number,
     updataCommentDto: UpdateCommentDto,
   ): Promise<Comment> {
     const commnet = await this.commentRepository.findOne({
-      where: { commentIdx },
+      where: { id },
     });
 
     const { commentContent } = updataCommentDto;
@@ -54,15 +54,15 @@ export class CommentService {
     return await this.commentRepository.save(commnet);
   }
 
-  async deleteComment(commentIdx: number): Promise<Comment> {
+  async deleteComment(id: number): Promise<Comment> {
     const commnet = await this.commentRepository.findOne({
-      where: { commentIdx },
+      where: { id },
     });
 
     if (!commnet) {
-      throw new NotFoundException(`Comment with ID ${commentIdx} not found`);
+      throw new NotFoundException(`Comment with ID ${id} not found`);
     }
-    await this.commentRepository.delete(commentIdx);
+    await this.commentRepository.delete(id);
     return commnet;
   }
 }

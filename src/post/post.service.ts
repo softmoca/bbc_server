@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from 'src/entities/Post';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { CreatePostDto } from './dto/createPost.dto';
 import { UpdatePostDto } from './dto/updatePost.dto';
+import { PaginatePostDto } from './dto/paginate-post.dto';
 
 @Injectable()
 export class PostService {
@@ -11,6 +12,18 @@ export class PostService {
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
   ) {}
+
+  async paginatePosts(dto: PaginatePostDto) {
+    const posts = await this.postRepository.find({
+      where: {
+        id: MoreThan(dto.where__id__more_than),
+      },
+      order: {
+        createdAt: dto.order__createdAt,
+      },
+      take: dto.take,
+    });
+  }
 
   async getAllPost(): Promise<Post[]> {
     return await this.postRepository.find();
@@ -104,11 +117,11 @@ export class PostService {
     });
   }
 
-  async getOnePost(postIdx: number): Promise<Post> {
-    const post = await this.postRepository.findOne({ where: { postIdx } });
+  async getOnePost(id: number): Promise<Post> {
+    const post = await this.postRepository.findOne({ where: { id } });
 
     if (!post) {
-      throw new NotFoundException(`Post with ID ${postIdx} not found`);
+      throw new NotFoundException(`Post with ID ${id} not found`);
     }
 
     return post;
@@ -127,11 +140,8 @@ export class PostService {
     return await this.postRepository.save(post);
   }
 
-  async updatePost(
-    postIdx: number,
-    updataPostDto: UpdatePostDto,
-  ): Promise<Post> {
-    const post = await this.getOnePost(postIdx);
+  async updatePost(id: number, updataPostDto: UpdatePostDto): Promise<Post> {
+    const post = await this.getOnePost(id);
     const { postTitle, postContent, buildingName, chatRoomTitle } =
       updataPostDto;
 
@@ -143,12 +153,12 @@ export class PostService {
     return await this.postRepository.save(post);
   }
 
-  async deletePost(postIdx: number): Promise<Post> {
-    const post = await this.postRepository.findOne({ where: { postIdx } });
+  async deletePost(id: number): Promise<Post> {
+    const post = await this.postRepository.findOne({ where: { id } });
     if (!post) {
-      throw new NotFoundException(`Post with ID ${postIdx} not found`);
+      throw new NotFoundException(`Post with ID ${id} not found`);
     }
-    await this.postRepository.delete(postIdx);
+    await this.postRepository.delete(id);
     return post;
   }
 }

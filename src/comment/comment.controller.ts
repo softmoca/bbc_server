@@ -18,9 +18,9 @@ import { UpdateCommentDto } from './dto/updateComment.dto';
 export class CommentController {
   constructor(private commentService: CommentService) {}
 
-  @Get('/:postIdx')
-  findAllComment(@Param('postIdx') postIdx: number) {
-    return this.commentService.findAllComment(postIdx);
+  @Get('/:id')
+  findAllComment(@Param('id') id: number) {
+    return this.commentService.findAllComment(id);
   }
 
   @Post()
@@ -28,18 +28,15 @@ export class CommentController {
     return this.commentService.createComment(createPostDto);
   }
 
-  @Patch(':commentIdx')
+  @Patch(':id')
   async updateComment(
-    @Param('commentIdx') commentIdx: number,
+    @Param('id') id: number,
     @Body() updataCommentDto: UpdateCommentDto,
   ) {
-    return await this.commentService.updateComment(
-      commentIdx,
-      updataCommentDto,
-    );
+    return await this.commentService.updateComment(id, updataCommentDto);
   }
 
-  @Delete(':commentIdx')
+  @Delete(':id')
   async deleteCommnet(@Param('commentIdx') commentIdx: number) {
     return await this.commentService.deleteComment(commentIdx);
   }

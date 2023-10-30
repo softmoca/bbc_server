@@ -1,12 +1,9 @@
 import { IsEmail, Length } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { BaseModel } from './base.entity';
 
 @Entity('User', { schema: 'bbc_database' })
 export class User extends BaseModel {
-  @PrimaryGeneratedColumn({ type: 'int', name: 'userIdx' })
-  userIdx: number;
-
   @Length(1, 30)
   @IsEmail()
   @Column('varchar', { name: 'email', length: 30 })

@@ -81,9 +81,9 @@ export class PostController {
     return this.postService.getNuriPost();
   }
 
-  @Get(':postIdx')
-  getOnePost(@Param('postIdx') postIdx: number) {
-    return this.postService.getOnePost(postIdx);
+  @Get(':id')
+  getOnePost(@Param('id') id: number) {
+    return this.postService.getOnePost(id);
   }
 
   @Post()
@@ -91,17 +91,17 @@ export class PostController {
     return this.postService.createPost(createPostDto);
   }
 
-  @Patch(':postIdx')
+  @Patch(':id')
   async updatePost(
-    @Param('postIdx') postIdx: number,
+    @Param('id') id: number,
     @Body() updataPostDto: UpdatePostDto,
   ) {
-    return await this.postService.updatePost(postIdx, updataPostDto);
+    return await this.postService.updatePost(id, updataPostDto);
   }
 
-  @Delete(':postIdx')
-  async deletePost(@Param('postIdx') postIdx: number) {
-    return await this.postService.deletePost(postIdx);
+  @Delete(':id')
+  async deletePost(@Param('id') id: number) {
+    return await this.postService.deletePost(id);
   }
 
   @UseInterceptors(FilesInterceptor('files', 10, multerOptions('postImage')))
