@@ -14,7 +14,7 @@ export class PaginatePostDto {
 
   @IsIn(['ASC', 'DESC'])
   @IsOptional()
-  order__createdAt: 'DESC' | 'ASC' = 'DESC';
+  order__createdAt: 'DESC' | 'ASC' = 'ASC';
 
   @IsNumber()
   @IsOptional()
