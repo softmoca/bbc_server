@@ -102,6 +102,8 @@ export class PostController {
   @Post()
   async createPost(@Body() createPostDto: CreatePostDto) {
     console.log(createPostDto);
+    await this.postService.createPostImage(createPostDto);
+
     return this.postService.createPost(createPostDto);
   }
 
