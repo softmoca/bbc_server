@@ -212,11 +212,8 @@ export class PostService {
     return post;
   }
 
-  async createPost(
-    createPostDto: CreatePostDto,
-    postImage?: string,
-  ): Promise<Post> {
-    const { postTitle, postContent, buildingName, chatRoomTitle } =
+  async createPost(createPostDto: CreatePostDto): Promise<Post> {
+    const { postTitle, postContent, buildingName, chatRoomTitle, postImage } =
       createPostDto;
     const post = new Post();
     post.postTitle = postTitle;
@@ -224,20 +221,19 @@ export class PostService {
     post.chatRoomTitle = chatRoomTitle;
     post.postContent = postContent;
     post.postImage = postImage;
-
-    console.log(postImage);
     return await this.postRepository.save(post);
   }
 
   async updatePost(id: number, updataPostDto: UpdatePostDto): Promise<Post> {
     const post = await this.getOnePost(id);
-    const { postTitle, postContent, buildingName, chatRoomTitle } =
+    const { postTitle, postContent, buildingName, chatRoomTitle, postImage } =
       updataPostDto;
 
     post.postTitle = postTitle;
     post.postContent = postContent;
     post.buildingName = buildingName;
     post.chatRoomTitle = chatRoomTitle;
+    post.postImage = postImage;
 
     return await this.postRepository.save(post);
   }
