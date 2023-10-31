@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -36,6 +37,7 @@ export class PostController {
   }
 
   @Get()
+  @UseInterceptors(ClassSerializerInterceptor)
   getPost(@Query() query: PaginatePostDto) {
     return this.postService.paginatePosts(query);
   }
@@ -99,6 +101,7 @@ export class PostController {
     return this.postService.getOnePost(id);
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   async createPost(@Body() createPostDto: CreatePostDto) {
     console.log(createPostDto);
