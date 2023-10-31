@@ -9,6 +9,7 @@ import { CommonModule } from 'src/common/common.module';
 import { extname } from 'path';
 import * as multer from 'multer';
 import { v4 as uuid } from 'uuid';
+import { POST_IMAGE_PATH } from 'src/common/const/path.const';
 
 @Module({
   imports: [
