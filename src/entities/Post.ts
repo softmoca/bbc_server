@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Comment } from './Comment';
 import { BaseModel } from './base.entity';
-import { Length } from 'class-validator';
+import { IsOptional, Length } from 'class-validator';
 
 @Entity('Post', { schema: 'bbc_database' })
 export class Post extends BaseModel {
@@ -16,12 +16,14 @@ export class Post extends BaseModel {
   @Column('boolean', { name: 'postAnonymous', default: true })
   postAnonymous: boolean;
 
+  @IsOptional()
   @Column('text', { name: 'postImage', nullable: true })
   postImage?: string;
 
   @Column('int', { name: 'postLike', default: 0 })
   postLike: number;
 
+  @Length(1, 10)
   @Column('varchar', { name: 'buildingName', nullable: true, length: 20 })
   buildingName: string | null;
 

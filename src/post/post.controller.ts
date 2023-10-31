@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  UploadedFile,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -14,7 +15,7 @@ import { PostService } from './post.service';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { CreatePostDto } from './dto/createPost.dto';
 import { UpdatePostDto } from './dto/updatePost.dto';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/common/utils/multer.options';
 import { PaginatePostDto } from './dto/paginate-post.dto';
 
@@ -99,9 +100,23 @@ export class PostController {
     return this.postService.getOnePost(id);
   }
 
+  @UseInterceptors(FileInterceptor('postImage'))
   @Post()
-  async createPost(@Body() createPostDto: CreatePostDto) {
-    return this.postService.createPost(createPostDto);
+  async createPost(
+    @Body() createPostDto: CreatePostDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    return this.postService.createPost(createPostDto, file?.filename);
+  }
+
+  @UseInterceptors(FilesInterceptor('files'))
+  @Post('image')
+  uploadImage(@UploadedFiles() files: Array<Express.Multer.File>) {
+    console.log(files);
+
+    return {
+      image: `http://localhost:3030/media/postImage/${files[0].filename}`,
+    };
   }
 
   @Patch(':id')
@@ -115,15 +130,5 @@ export class PostController {
   @Delete(':id')
   async deletePost(@Param('id') id: number) {
     return await this.postService.deletePost(id);
-  }
-
-  @UseInterceptors(FilesInterceptor('files', 10, multerOptions('postImage')))
-  @Post('image')
-  uploadImage(@UploadedFiles() files: Array<Express.Multer.File>) {
-    console.log(files);
-
-    return {
-      image: `http://localhost:3030/media/postImage/${files[0].filename}`,
-    };
   }
 }

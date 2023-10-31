@@ -6,5 +6,4 @@ export class CreatePostDto extends PickType(Post, [
   'postContent',
   'buildingName',
   'chatRoomTitle',
-  'postImage',
 ]) {}

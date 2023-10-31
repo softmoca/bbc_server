@@ -106,7 +106,6 @@ export class PostService {
         postContent: `임의로 생성된 포스트 내용 ${i}`,
         buildingName: '참빛관',
         chatRoomTitle: `임의로 생성된 채팅방 이름 ${i}`,
-        postImage: 'wewerwer',
       });
     }
   }
@@ -213,8 +212,11 @@ export class PostService {
     return post;
   }
 
-  async createPost(createPostDto: CreatePostDto): Promise<Post> {
-    const { postTitle, postContent, buildingName, chatRoomTitle, postImage } =
+  async createPost(
+    createPostDto: CreatePostDto,
+    postImage?: string,
+  ): Promise<Post> {
+    const { postTitle, postContent, buildingName, chatRoomTitle } =
       createPostDto;
     const post = new Post();
     post.postTitle = postTitle;
