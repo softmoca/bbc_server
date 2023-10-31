@@ -11,12 +11,18 @@ import { Post } from './entities/Post';
 import { Comment } from './entities/Comment';
 import { PostModule } from './post/post.module';
 import { CommentModule } from './comment/comment.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { PUBLIC_FOLDER_PATH } from './common/const/path.const';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: 'env',
       isGlobal: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: PUBLIC_FOLDER_PATH,
+      serveRoot: '/public',
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',

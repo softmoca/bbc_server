@@ -106,6 +106,7 @@ export class PostController {
     @Body() createPostDto: CreatePostDto,
     @UploadedFile() file?: Express.Multer.File,
   ) {
+    console.log(file);
     return this.postService.createPost(createPostDto, file?.filename);
   }
 

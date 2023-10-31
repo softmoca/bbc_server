@@ -2,6 +2,9 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { Comment } from './Comment';
 import { BaseModel } from './base.entity';
 import { IsOptional, Length } from 'class-validator';
+import { POST_PUBLIC_IMAGE_PATH } from 'src/common/const/path.const';
+import { Transform } from 'class-transformer';
+import { join } from 'path';
 
 @Entity('Post', { schema: 'bbc_database' })
 export class Post extends BaseModel {
@@ -18,6 +21,7 @@ export class Post extends BaseModel {
 
   @IsOptional()
   @Column('text', { name: 'postImage', nullable: true })
+  @Transform(({ value }) => value && `/${join(POST_PUBLIC_IMAGE_PATH, value)}`)
   postImage?: string;
 
   @Column('int', { name: 'postLike', default: 0 })

@@ -225,6 +225,7 @@ export class PostService {
     post.postContent = postContent;
     post.postImage = postImage;
 
+    console.log(postImage);
     return await this.postRepository.save(post);
   }
 
