@@ -17,7 +17,7 @@ export class Post extends BaseModel {
   postAnonymous: boolean;
 
   @Column('text', { name: 'postImage', nullable: true })
-  postImage: string;
+  postImage?: string;
 
   @Column('int', { name: 'postLike', default: 0 })
   postLike: number;
