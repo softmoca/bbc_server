@@ -9,6 +9,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { ChatsService } from './chats.service';
+import { EnterChatDto } from './dto/enter-chat.dto';
 
 @WebSocketGateway({
   namespace: 'chats', //ws:localhost:3000/chats
@@ -32,8 +33,11 @@ export class ChatsGateway implements OnGatewayConnection {
   }
 
   @SubscribeMessage('enter_chat')
-  enterChat(@MessageBody() data: number[], @ConnectedSocket() socket: Socket) {
-    socket.join(data.map((x) => x.toString()));
+  enterChat(
+    @MessageBody() data: EnterChatDto,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    socket.join(data.chatIds.map((x) => x.toString()));
   }
 
   @SubscribeMessage('send_message')
