@@ -32,7 +32,7 @@ export class ChatsService {
     return this.commonService.paginate<Chats>(
       dto,
       this.chatsRepository,
-      {},
+      { relations: { users: true } },
       'chats',
     );
   }
