@@ -21,8 +21,10 @@ import { UpdatePostDto } from './dto/updatePost.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { PaginatePostDto } from './dto/paginate-post.dto';
 import { ImageModelType } from 'src/entities/Image';
-import { DataSource } from 'typeorm';
+import { DataSource, QueryRunner as QR } from 'typeorm';
 import { PostImageService } from './image/image.service';
+import { TransactionInterceptor } from 'src/common/interceptors/transaction.interceptor';
+import { QueryRunner } from 'src/common/decorators/query-runner.decorator';
 
 @Controller('post')
 @UseInterceptors(SuccessInterceptor)
@@ -111,40 +113,28 @@ export class PostController {
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
+  @UseInterceptors(TransactionInterceptor)
   @Post()
-  async createPost(@Body() createPostDto: CreatePostDto) {
-    const qr = this.dataSource.createQueryRunner();
-    await qr.connect();
-    await qr.startTransaction();
+  async createPost(
+    @Body() createPostDto: CreatePostDto,
+    @QueryRunner() qr: QR,
+  ) {
+    const post = await this.postService.createPost(createPostDto, qr);
+    //throw new InternalServerErrorException('일부러넣은 에러');
 
-    try {
-      const post = await this.postService.createPost(createPostDto, qr);
-
-      throw new InternalServerErrorException('일부러만든 에라');
-
-      for (let i = 0; i < createPostDto.images.length; i++) {
-        await this.postImageService.createPostImage(
-          {
-            post,
-            path: createPostDto.images[i],
-            order: i,
-            type: ImageModelType.postImage,
-          },
-          qr,
-        );
-      }
-
-      await qr.commitTransaction();
-      await qr.release();
-
-      return this.postService.getOnePost(post.id);
-    } catch (e) {
-      await qr.rollbackTransaction();
-      await qr.release();
-      throw new InternalServerErrorException(
-        '트랜잭션 사이에 문제가 있습니다..',
+    for (let i = 0; i < createPostDto.images.length; i++) {
+      await this.postImageService.createPostImage(
+        {
+          post,
+          path: createPostDto.images[i],
+          order: i,
+          type: ImageModelType.postImage,
+        },
+        qr,
       );
     }
+
+    return this.postService.getOnePost(post.id, qr);
   }
 
   @Patch(':id')

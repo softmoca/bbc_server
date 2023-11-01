@@ -229,8 +229,10 @@ export class PostService {
     });
   }
 
-  async getOnePost(id: number): Promise<Post> {
-    const post = await this.postRepository.findOne({
+  async getOnePost(id: number, qr?: QueryRunner): Promise<Post> {
+    const repository = this.getRepository(qr);
+
+    const post = await repository.findOne({
       where: { id },
       relations: ['images'],
     });
