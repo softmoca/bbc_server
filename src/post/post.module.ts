@@ -6,9 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from 'src/entities/Post';
 
 import { CommonModule } from 'src/common/common.module';
+import { Image } from 'src/entities/Image';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post]), CommonModule],
+  imports: [TypeOrmModule.forFeature([Post, Image]), CommonModule],
   controllers: [PostController],
   providers: [PostService],
 })

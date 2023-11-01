@@ -18,6 +18,8 @@ import {
 } from 'src/common/const/path.const';
 import { basename, join } from 'path';
 import { promises } from 'fs';
+import { CreatePostImageDto } from './image/dto/create-image.dto';
+import { Image } from 'src/entities/Image';
 
 @Injectable()
 export class PostService {
@@ -25,10 +27,17 @@ export class PostService {
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
     private readonly commonService: CommonService,
+    @InjectRepository(Image)
+    private readonly imageRepository: Repository<Image>,
   ) {}
 
   async paginatePosts(dto: PaginatePostDto) {
-    return this.commonService.paginate(dto, this.postRepository, {}, 'post');
+    return this.commonService.paginate(
+      dto,
+      this.postRepository,
+      { relations: ['images'] },
+      'post',
+    );
   }
 
   async pagePaginatePosts(dto: PaginatePostDto) {
@@ -117,6 +126,7 @@ export class PostService {
         postContent: `임의로 생성된 포스트 내용 ${i}`,
         buildingName: '참빛관',
         chatRoomTitle: `임의로 생성된 채팅방 이름 ${i}`,
+        images: [],
       });
     }
   }
@@ -214,7 +224,10 @@ export class PostService {
   }
 
   async getOnePost(id: number): Promise<Post> {
-    const post = await this.postRepository.findOne({ where: { id } });
+    const post = await this.postRepository.findOne({
+      where: { id },
+      relations: ['images'],
+    });
 
     if (!post) {
       throw new NotFoundException(`Post with ID ${id} not found`);
@@ -223,8 +236,8 @@ export class PostService {
     return post;
   }
 
-  async createPostImage(createPostDto: CreatePostDto) {
-    const tempFilePath = join(TEMP_FOLDER_PATH, createPostDto.chatRoomTitle);
+  async createPostImage(createPosImagetDto: CreatePostImageDto) {
+    const tempFilePath = join(TEMP_FOLDER_PATH, createPosImagetDto.path);
 
     try {
       await promises.access(tempFilePath);
@@ -237,13 +250,16 @@ export class PostService {
 
     const newPath = join(POST_IMAGE_PATH, fileName);
 
+    const result = await this.imageRepository.save({ ...createPosImagetDto });
+
     await promises.rename(tempFilePath, newPath);
-    return true;
+    return result;
   }
 
   async createPost(createPostDto: CreatePostDto) {
     const post = this.postRepository.create({
       ...createPostDto,
+      images: [],
     });
 
     const newPost = await this.postRepository.save(post);

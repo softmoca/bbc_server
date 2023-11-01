@@ -18,6 +18,7 @@ import { CreatePostDto } from './dto/createPost.dto';
 import { UpdatePostDto } from './dto/updatePost.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { PaginatePostDto } from './dto/paginate-post.dto';
+import { ImageModelType } from 'src/entities/Image';
 
 @Controller('post')
 @UseInterceptors(SuccessInterceptor)
@@ -104,10 +105,18 @@ export class PostController {
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   async createPost(@Body() createPostDto: CreatePostDto) {
-    console.log(createPostDto);
-    await this.postService.createPostImage(createPostDto);
+    const post = await this.postService.createPost(createPostDto);
 
-    return this.postService.createPost(createPostDto);
+    for (let i = 0; i < createPostDto.images.length; i++) {
+      await this.postService.createPostImage({
+        post,
+        path: createPostDto.images[i],
+        order: i,
+        type: ImageModelType.postImage,
+      });
+    }
+
+    return this.postService.getOnePost(post.id);
   }
 
   @Patch(':id')

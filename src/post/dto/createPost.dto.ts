@@ -8,7 +8,7 @@ export class CreatePostDto extends PickType(Post, [
   'buildingName',
   'chatRoomTitle',
 ]) {
-  // @IsString()
-  // @IsOptional()
-  // postImage?: string;
+  @IsString({ each: true })
+  @IsOptional()
+  images?: string[] = [];
 }
