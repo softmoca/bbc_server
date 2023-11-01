@@ -224,7 +224,7 @@ export class PostService {
   }
 
   async createPostImage(createPostDto: CreatePostDto) {
-    const tempFilePath = join(TEMP_FOLDER_PATH, createPostDto.postImage);
+    const tempFilePath = join(TEMP_FOLDER_PATH, createPostDto.chatRoomTitle);
 
     try {
       await promises.access(tempFilePath);
@@ -241,28 +241,37 @@ export class PostService {
     return true;
   }
 
-  async createPost(createPostDto: CreatePostDto): Promise<Post> {
-    const { postTitle, postContent, buildingName, chatRoomTitle, postImage } =
-      createPostDto;
-    const post = new Post();
-    post.postTitle = postTitle;
-    post.buildingName = buildingName;
-    post.chatRoomTitle = chatRoomTitle;
-    post.postContent = postContent;
-    post.postImage = postImage;
-    return await this.postRepository.save(post);
+  async createPost(createPostDto: CreatePostDto) {
+    const post = this.postRepository.create({
+      ...createPostDto,
+    });
+
+    const newPost = await this.postRepository.save(post);
+
+    return newPost;
   }
+
+  // async ccreatePost(createPostDto: CreatePostDto): Promise<Post> {
+  //   const { postTitle, postContent, buildingName, chatRoomTitle, postImage } =
+  //     createPostDto;
+  //   const post = new Post();
+  //   post.postTitle = postTitle;
+  //   post.buildingName = buildingName;
+  //   post.chatRoomTitle = chatRoomTitle;
+  //   post.postContent = postContent;
+  //   post.postImage = postImage;
+  //   return await this.postRepository.save(post);
+  // }
 
   async updatePost(id: number, updataPostDto: UpdatePostDto): Promise<Post> {
     const post = await this.getOnePost(id);
-    const { postTitle, postContent, buildingName, chatRoomTitle, postImage } =
+    const { postTitle, postContent, buildingName, chatRoomTitle } =
       updataPostDto;
 
     post.postTitle = postTitle;
     post.postContent = postContent;
     post.buildingName = buildingName;
     post.chatRoomTitle = chatRoomTitle;
-    post.postImage = postImage;
 
     return await this.postRepository.save(post);
   }

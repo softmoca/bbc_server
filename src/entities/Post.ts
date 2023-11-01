@@ -5,6 +5,7 @@ import { IsOptional, Length } from 'class-validator';
 import { POST_PUBLIC_IMAGE_PATH } from 'src/common/const/path.const';
 import { Transform } from 'class-transformer';
 import { join } from 'path';
+import { Image } from './Image';
 
 @Entity('Post', { schema: 'bbc_database' })
 export class Post extends BaseModel {
@@ -19,11 +20,6 @@ export class Post extends BaseModel {
   @Column('boolean', { name: 'postAnonymous', default: true })
   postAnonymous: boolean;
 
-  @IsOptional()
-  @Column('text', { name: 'postImage', nullable: true })
-  @Transform(({ value }) => value && `/${join(POST_PUBLIC_IMAGE_PATH, value)}`)
-  postImage?: string;
-
   @Column('int', { name: 'postLike', default: 0 })
   postLike: number;
 
@@ -37,4 +33,7 @@ export class Post extends BaseModel {
 
   @OneToMany(() => Comment, (comments) => comments.Post)
   Comments: Comment[];
+
+  @OneToMany((type) => Image, (image) => image.post)
+  images: Image[];
 }

@@ -13,6 +13,7 @@ import { PostModule } from './post/post.module';
 import { CommentModule } from './comment/comment.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { PUBLIC_FOLDER_PATH } from './common/const/path.const';
+import { Image } from './entities/Image';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { PUBLIC_FOLDER_PATH } from './common/const/path.const';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User, Post, Comment],
+      entities: [User, Post, Comment, Image],
       synchronize: true,
       //logging: true,
       charset: 'utf8mb4',

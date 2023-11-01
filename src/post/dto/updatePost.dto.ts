@@ -7,5 +7,4 @@ export class UpdatePostDto extends PickType(Post, [
   'postContent',
   'buildingName',
   'chatRoomTitle',
-  'postImage',
 ]) {}
