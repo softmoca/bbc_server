@@ -120,9 +120,7 @@ export class PostController {
     try {
       const post = await this.postService.createPost(createPostDto, qr);
 
-      throw new InternalServerErrorException(
-        '트랜잭션 사이에 문제가 있습니다..',
-      );
+      throw new InternalServerErrorException('일부러만든 에라');
 
       for (let i = 0; i < createPostDto.images.length; i++) {
         await this.postImageService.createPostImage(
