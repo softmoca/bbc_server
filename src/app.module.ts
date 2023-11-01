@@ -15,6 +15,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { PUBLIC_FOLDER_PATH } from './common/const/path.const';
 import { Image } from './entities/Image';
 import { ChatsModule } from './chats/chats.module';
+import { Chats } from './entities/chats.entity';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { ChatsModule } from './chats/chats.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User, Post, Comment, Image],
+      entities: [User, Post, Comment, Image, Chats],
       synchronize: true,
       //logging: true,
       charset: 'utf8mb4',

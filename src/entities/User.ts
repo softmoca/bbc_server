@@ -1,6 +1,7 @@
 import { IsEmail, Length } from 'class-validator';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 import { BaseModel } from './base.entity';
+import { Chats } from './chats.entity';
 
 @Entity('User', { schema: 'bbc_database' })
 export class User extends BaseModel {
@@ -38,4 +39,8 @@ export class User extends BaseModel {
 
   @Column('text', { name: 'profileImage', nullable: true })
   profileImage: string | null;
+
+  @ManyToMany(() => Chats, (chat) => chat.users)
+  @JoinTable()
+  chats: Chats[];
 }
