@@ -32,7 +32,7 @@ export class ChatsGateway implements OnGatewayConnection {
     @ConnectedSocket() socket: Socket,
   ) {
     this.server
-      .in(message.chatId.toString())
+      .to(message.chatId.toString())
       .emit('receive_message', '서버로 부터온 메세지');
   }
 }
