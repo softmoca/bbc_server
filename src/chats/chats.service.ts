@@ -1,16 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 
 import { Chats } from 'src/entities/chats.entity';
 import { CreateChatDto } from './dto/create-chat.dto';
+import { CommonService } from 'src/common/common.service';
+import { BasePaginationDto } from 'src/common/dto/base-pagination.dto';
 
 @Injectable()
 export class ChatsService {
   constructor(
     @InjectRepository(Chats)
     private readonly chatsRepository: Repository<Chats>,
+    private readonly commonService: CommonService,
   ) {}
 
   async createChat(dto: CreateChatDto) {
@@ -23,5 +26,14 @@ export class ChatsService {
         id: chat.id,
       },
     });
+  }
+
+  paginateChat(dto: BasePaginationDto) {
+    return this.commonService.paginate<Chats>(
+      dto,
+      this.chatsRepository,
+      {},
+      'chats',
+    );
   }
 }
