@@ -33,9 +33,7 @@ export class ChatsGateway implements OnGatewayConnection {
 
   @SubscribeMessage('enter_chat')
   enterChat(@MessageBody() data: number[], @ConnectedSocket() socket: Socket) {
-    for (const chatId of data) {
-      socket.join(chatId.toString());
-    }
+    socket.join(data.map((x) => x.toString()));
   }
 
   @SubscribeMessage('send_message')
