@@ -5,7 +5,13 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from 'src/entities/Post';
-import { FindOptionsWhere, LessThan, MoreThan, Repository } from 'typeorm';
+import {
+  FindOptionsWhere,
+  LessThan,
+  MoreThan,
+  QueryRunner,
+  Repository,
+} from 'typeorm';
 import { CreatePostDto } from './dto/createPost.dto';
 import { UpdatePostDto } from './dto/updatePost.dto';
 import { PaginatePostDto } from './dto/paginate-post.dto';
@@ -236,48 +242,22 @@ export class PostService {
     return post;
   }
 
-  async createPostImage(createPosImagetDto: CreatePostImageDto) {
-    const tempFilePath = join(TEMP_FOLDER_PATH, createPosImagetDto.path);
-
-    try {
-      await promises.access(tempFilePath);
-    } catch (e) {
-      throw new BadRequestException('존재하지 않는 파일입니다.');
-    }
-
-    //파일 이름만 가져오기
-    const fileName = basename(tempFilePath);
-
-    const newPath = join(POST_IMAGE_PATH, fileName);
-
-    const result = await this.imageRepository.save({ ...createPosImagetDto });
-
-    await promises.rename(tempFilePath, newPath);
-    return result;
+  getRepository(qr?: QueryRunner) {
+    return qr ? qr.manager.getRepository<Post>(Post) : this.postRepository;
   }
 
-  async createPost(createPostDto: CreatePostDto) {
-    const post = this.postRepository.create({
+  async createPost(createPostDto: CreatePostDto, qr?: QueryRunner) {
+    const repository = this.getRepository(qr);
+
+    const post = repository.create({
       ...createPostDto,
       images: [],
     });
 
-    const newPost = await this.postRepository.save(post);
+    const newPost = await repository.save(post);
 
     return newPost;
   }
-
-  // async ccreatePost(createPostDto: CreatePostDto): Promise<Post> {
-  //   const { postTitle, postContent, buildingName, chatRoomTitle, postImage } =
-  //     createPostDto;
-  //   const post = new Post();
-  //   post.postTitle = postTitle;
-  //   post.buildingName = buildingName;
-  //   post.chatRoomTitle = chatRoomTitle;
-  //   post.postContent = postContent;
-  //   post.postImage = postImage;
-  //   return await this.postRepository.save(post);
-  // }
 
   async updatePost(id: number, updataPostDto: UpdatePostDto): Promise<Post> {
     const post = await this.getOnePost(id);

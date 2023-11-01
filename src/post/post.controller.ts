@@ -1,9 +1,11 @@
 import {
+  BadRequestException,
   Body,
   ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
+  InternalServerErrorException,
   Param,
   Patch,
   Post,
@@ -19,11 +21,17 @@ import { UpdatePostDto } from './dto/updatePost.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { PaginatePostDto } from './dto/paginate-post.dto';
 import { ImageModelType } from 'src/entities/Image';
+import { DataSource } from 'typeorm';
+import { PostImageService } from './image/image.service';
 
 @Controller('post')
 @UseInterceptors(SuccessInterceptor)
 export class PostController {
-  constructor(private postService: PostService) {}
+  constructor(
+    private postService: PostService,
+    private readonly postImageService: PostImageService,
+    private readonly dataSource: DataSource,
+  ) {}
 
   // @Get()
   // getAllPost() {
@@ -105,18 +113,40 @@ export class PostController {
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   async createPost(@Body() createPostDto: CreatePostDto) {
-    const post = await this.postService.createPost(createPostDto);
+    const qr = this.dataSource.createQueryRunner();
+    await qr.connect();
+    await qr.startTransaction();
 
-    for (let i = 0; i < createPostDto.images.length; i++) {
-      await this.postService.createPostImage({
-        post,
-        path: createPostDto.images[i],
-        order: i,
-        type: ImageModelType.postImage,
-      });
+    try {
+      const post = await this.postService.createPost(createPostDto, qr);
+
+      throw new InternalServerErrorException(
+        '트랜잭션 사이에 문제가 있습니다..',
+      );
+
+      for (let i = 0; i < createPostDto.images.length; i++) {
+        await this.postImageService.createPostImage(
+          {
+            post,
+            path: createPostDto.images[i],
+            order: i,
+            type: ImageModelType.postImage,
+          },
+          qr,
+        );
+      }
+
+      await qr.commitTransaction();
+      await qr.release();
+
+      return this.postService.getOnePost(post.id);
+    } catch (e) {
+      await qr.rollbackTransaction();
+      await qr.release();
+      throw new InternalServerErrorException(
+        '트랜잭션 사이에 문제가 있습니다..',
+      );
     }
-
-    return this.postService.getOnePost(post.id);
   }
 
   @Patch(':id')
