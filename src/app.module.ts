@@ -14,6 +14,7 @@ import { CommentModule } from './comment/comment.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { PUBLIC_FOLDER_PATH } from './common/const/path.const';
 import { Image } from './entities/Image';
+import { ChatsModule } from './chats/chats.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { Image } from './entities/Image';
     AuthModule,
     PostModule,
     CommentModule,
+    ChatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
