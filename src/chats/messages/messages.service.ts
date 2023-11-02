@@ -30,7 +30,7 @@ export class MessagesService {
       where: {
         id: message.id,
       },
-      relations: ['author'],
+      relations: ['chat'],
     });
   }
 
