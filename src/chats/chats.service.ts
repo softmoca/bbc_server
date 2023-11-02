@@ -28,6 +28,16 @@ export class ChatsService {
     });
   }
 
+  async checkIfChatExists(chatId: number) {
+    const exists = await this.chatsRepository.findOne({
+      where: {
+        id: chatId,
+      },
+    });
+
+    return exists;
+  }
+
   paginateChat(dto: BasePaginationDto) {
     return this.commonService.paginate<Chats>(
       dto,
