@@ -5,6 +5,7 @@ import { CommonService } from '../../common/common.service';
 
 import { BasePaginationDto } from 'src/common/dto/base-pagination.dto';
 import { Messages } from 'src/entities/messages.entity';
+import { CreateMessageDto } from './dto/create-message.dto';
 
 @Injectable()
 export class MessagesService {
@@ -13,6 +14,25 @@ export class MessagesService {
     private readonly messageRepository: Repository<Messages>,
     private readonly commonService: CommonService,
   ) {}
+
+  async createMessage(dto: CreateMessageDto) {
+    const message = await this.messageRepository.save({
+      chat: {
+        id: dto.chatId,
+      },
+      author: {
+        id: dto.authorId,
+      },
+      message: dto.message,
+    });
+
+    return this.messageRepository.findOne({
+      where: {
+        id: message.id,
+      },
+      relations: ['author'],
+    });
+  }
 
   paginateMessage(
     dto: BasePaginationDto,
