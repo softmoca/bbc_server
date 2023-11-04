@@ -61,6 +61,18 @@ export class ChatsGateway implements OnGatewayConnection {
     const chat = await this.chatsService.createChat(data);
   }
 
+  @UsePipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  )
+  @UseFilters(SocketCatchHttpExceptionFilter)
+  @UseGuards(SocketBearerTokenGuard)
   @SubscribeMessage('enter_chat')
   async enterChat(
     @MessageBody() data: EnterChatDto,
@@ -89,6 +101,7 @@ export class ChatsGateway implements OnGatewayConnection {
     }),
   )
   @UseFilters(SocketCatchHttpExceptionFilter)
+  @UseGuards(SocketBearerTokenGuard)
   @SubscribeMessage('send_message')
   async sendMessage(
     @MessageBody() dto: CreateMessageDto,
