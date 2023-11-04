@@ -23,18 +23,17 @@ export class CommentService {
     }
 
     const comment = await this.commentRepository.find({
-      where: { CommentPostIdx: id },
+      where: { id },
     });
 
     return comment;
   }
 
   async createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
-    const { CommentPostIdx, commentContent } = createCommentDto;
+    const { commentContent } = createCommentDto;
     const comment = new Comment();
 
     comment.commentContent = commentContent;
-    comment.CommentPostIdx = CommentPostIdx;
 
     return await this.commentRepository.save(comment);
   }

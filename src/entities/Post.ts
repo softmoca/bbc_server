@@ -1,10 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Comment } from './Comment';
 import { BaseModel } from './base.entity';
-import { IsOptional, Length } from 'class-validator';
-import { POST_PUBLIC_IMAGE_PATH } from 'src/common/const/path.const';
-import { Transform } from 'class-transformer';
-import { join } from 'path';
+import { Length } from 'class-validator';
 import { Image } from './Image';
 
 @Entity('Post', { schema: 'bbc_database' })
@@ -36,4 +33,7 @@ export class Post extends BaseModel {
 
   @OneToMany((type) => Image, (image) => image.post)
   images: Image[];
+
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments: Comment[];
 }

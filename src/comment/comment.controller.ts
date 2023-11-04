@@ -13,7 +13,7 @@ import { CreateCommentDto } from './dto/createComment.dto';
 import { CommentService } from './comment.service';
 import { UpdateCommentDto } from './dto/updateComment.dto';
 
-@Controller('comment')
+@Controller('/post/:postId/comment')
 @UseInterceptors(SuccessInterceptor)
 export class CommentController {
   constructor(private commentService: CommentService) {}

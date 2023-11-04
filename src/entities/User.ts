@@ -4,6 +4,7 @@ import { BaseModel } from './base.entity';
 import { Chats } from './chats.entity';
 import { Messages } from './messages.entity';
 import { Exclude } from 'class-transformer';
+import { Comment } from './Comment';
 
 @Entity('User', { schema: 'bbc_database' })
 export class User extends BaseModel {
@@ -52,4 +53,7 @@ export class User extends BaseModel {
 
   @OneToMany(() => Messages, (message) => message.author)
   messages: Messages[];
+
+  @OneToMany(() => Comment, (comment) => comment.author)
+  postComments: Comment[];
 }
