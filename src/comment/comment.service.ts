@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCommentDto } from './dto/createComment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -40,6 +44,18 @@ export class CommentService {
     return comment;
   }
 
+  async getCommentById(id: number) {
+    const commnet = await this.commentRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!commnet) {
+      throw new BadRequestException(`id : ${id} comment는 존재 하지 않습니다/`);
+    }
+  }
+
   async createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
     const { commentContent } = createCommentDto;
     const comment = new Comment();
@@ -47,32 +63,5 @@ export class CommentService {
     comment.commentContent = commentContent;
 
     return await this.commentRepository.save(comment);
-  }
-
-  async updateComment(
-    id: number,
-    updataCommentDto: UpdateCommentDto,
-  ): Promise<Comment> {
-    const commnet = await this.commentRepository.findOne({
-      where: { id },
-    });
-
-    const { commentContent } = updataCommentDto;
-
-    commnet.commentContent = commentContent;
-
-    return await this.commentRepository.save(commnet);
-  }
-
-  async deleteComment(id: number): Promise<Comment> {
-    const commnet = await this.commentRepository.findOne({
-      where: { id },
-    });
-
-    if (!commnet) {
-      throw new NotFoundException(`Comment with ID ${id} not found`);
-    }
-    await this.commentRepository.delete(id);
-    return commnet;
   }
 }

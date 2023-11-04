@@ -29,26 +29,13 @@ export class CommentController {
     return this.commentService.paginateComments(query, postId);
   }
 
-  @Get('/:id')
-  findAllComment(@Param('id') id: number) {
-    return this.commentService.findAllComment(id);
+  @Get('/:commentId')
+  findAllComment(@Param('commentId') commentId: number) {
+    return this.commentService.getCommentById(commentId);
   }
 
   @Post()
   async createComment(@Body() createPostDto: CreateCommentDto) {
     return this.commentService.createComment(createPostDto);
-  }
-
-  @Patch(':id')
-  async updateComment(
-    @Param('id') id: number,
-    @Body() updataCommentDto: UpdateCommentDto,
-  ) {
-    return await this.commentService.updateComment(id, updataCommentDto);
-  }
-
-  @Delete(':id')
-  async deleteCommnet(@Param('commentIdx') commentIdx: number) {
-    return await this.commentService.deleteComment(commentIdx);
   }
 }
