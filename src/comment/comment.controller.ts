@@ -40,7 +40,7 @@ export class CommentController {
     return this.commentService.getCommentById(commentId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Post()
   async createComment(
     @Param('postId', ParseIntPipe) postId: number,
@@ -58,5 +58,10 @@ export class CommentController {
     const comment = await this.commentService.updateComment(body, cid);
 
     return comment;
+  }
+
+  @Delete(':cid')
+  async deleteComment(@Param('cid') cid: number) {
+    return await this.commentService.deleteComment(cid);
   }
 }
