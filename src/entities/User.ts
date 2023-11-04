@@ -3,6 +3,7 @@ import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { BaseModel } from './base.entity';
 import { Chats } from './chats.entity';
 import { Messages } from './messages.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('User', { schema: 'bbc_database' })
 export class User extends BaseModel {
@@ -11,6 +12,9 @@ export class User extends BaseModel {
   @Column('varchar', { name: 'email', length: 30 })
   email: string;
 
+  @Exclude({
+    toPlainOnly: true,
+  })
   @Length(1, 30)
   @Column('varchar', { name: 'password', length: 300 })
   password: string;
@@ -19,6 +23,7 @@ export class User extends BaseModel {
   @Column('varchar', { name: 'nickName', length: 30 })
   nickName: string;
 
+  @Length(1, 30)
   @Column('varchar', { name: 'university', length: 30, nullable: true })
   university: string | null;
 
