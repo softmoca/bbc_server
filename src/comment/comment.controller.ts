@@ -8,13 +8,18 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
-import { CreateCommentDto } from './dto/createComment.dto';
+
 import { CommentService } from './comment.service';
-import { UpdateCommentDto } from './dto/updateComment.dto';
+
 import { PaginatePostDto } from 'src/post/dto/paginate-post.dto';
+import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
+import { CreateCommentDto } from './dto/createComment.dto';
+import { User } from 'src/entities/User';
+import { CurrentUser } from 'src/common/decorators/user.decorator';
 
 @Controller('/post/:postId/comment')
 @UseInterceptors(SuccessInterceptor)
@@ -30,12 +35,17 @@ export class CommentController {
   }
 
   @Get('/:commentId')
-  findAllComment(@Param('commentId') commentId: number) {
+  getCommentById(@Param('commentId') commentId: number) {
     return this.commentService.getCommentById(commentId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async createComment(@Body() createPostDto: CreateCommentDto) {
-    return this.commentService.createComment(createPostDto);
+  async createComment(
+    @Param('postId', ParseIntPipe) postId: number,
+    @Body() createPostDto: CreateCommentDto,
+    @CurrentUser() user: User,
+  ) {
+    return this.commentService.createComment(createPostDto, postId, user);
   }
 }

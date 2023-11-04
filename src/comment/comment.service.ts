@@ -5,12 +5,13 @@ import {
 } from '@nestjs/common';
 import { CreateCommentDto } from './dto/createComment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { QueryRunner, Repository } from 'typeorm';
 import { Comment } from 'src/entities/Comment';
 import { Post } from 'src/entities/Post';
 import { UpdateCommentDto } from './dto/updateComment.dto';
 import { PaginatePostDto } from 'src/post/dto/paginate-post.dto';
 import { CommonService } from 'src/common/common.service';
+import { User } from 'src/entities/User';
 
 @Injectable()
 export class CommentService {
@@ -25,7 +26,7 @@ export class CommentService {
     return this.commonService.paginate(
       dto,
       this.commentRepository,
-      { where: { post: { id: postId } } },
+      { relations: { author: true } },
       `posts/${postId}/comments`,
     );
   }
@@ -49,19 +50,27 @@ export class CommentService {
       where: {
         id,
       },
+      relations: {
+        author: true,
+      },
     });
 
+    console.log('commnet');
     if (!commnet) {
       throw new BadRequestException(`id : ${id} comment는 존재 하지 않습니다/`);
     }
+    return commnet;
   }
 
-  async createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
-    const { commentContent } = createCommentDto;
-    const comment = new Comment();
-
-    comment.commentContent = commentContent;
-
-    return await this.commentRepository.save(comment);
+  async createComment(
+    createCommentDto: CreateCommentDto,
+    postId: number,
+    author: User,
+  ): Promise<Comment> {
+    return await this.commentRepository.save({
+      ...createCommentDto,
+      post: { id: postId },
+      author,
+    });
   }
 }
