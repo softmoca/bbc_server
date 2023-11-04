@@ -41,7 +41,7 @@ export class PostService {
     return this.commonService.paginate(
       dto,
       this.postRepository,
-      { relations: ['images'] },
+      { relations: ['images', 'author'] },
       'post',
     );
   }
@@ -125,17 +125,18 @@ export class PostService {
     };
   }
 
-  async generatePosts() {
-    for (let i = 0; i < 30; i++) {
-      await this.createPost({
-        postTitle: `임의로 생성된 포스트 제목 ${i}`,
-        postContent: `임의로 생성된 포스트 내용 ${i}`,
-        buildingName: '참빛관',
-        chatRoomTitle: `임의로 생성된 채팅방 이름 ${i}`,
-        images: [],
-      });
-    }
-  }
+  // async generatePosts(userId: number) {
+  //   for (let i = 0; i < 30; i++) {
+  //     await this.createPost({
+  //       userId,
+  //       postTitle: `임의로 생성된 포스트 제목 ${i}`,
+  //       postContent: `임의로 생성된 포스트 내용 ${i}`,
+  //       buildingName: '참빛관',
+  //       chatRoomTitle: `임의로 생성된 채팅방 이름 ${i}`,
+  //       images: [],
+  //     });
+  //   }
+  // }
 
   async getAllPost(): Promise<Post[]> {
     return await this.postRepository.find();
@@ -248,10 +249,17 @@ export class PostService {
     return qr ? qr.manager.getRepository<Post>(Post) : this.postRepository;
   }
 
-  async createPost(createPostDto: CreatePostDto, qr?: QueryRunner) {
+  async createPost(
+    createPostDto: CreatePostDto,
+    qr?: QueryRunner,
+    userId?: number,
+  ) {
     const repository = this.getRepository(qr);
 
     const post = repository.create({
+      author: {
+        id: userId,
+      },
       ...createPostDto,
       images: [],
     });
@@ -287,6 +295,17 @@ export class PostService {
     return this.postRepository.exist({
       where: {
         id,
+      },
+    });
+  }
+
+  async isPostMine(userId: number, postId: number) {
+    return this.postRepository.exist({
+      where: {
+        id: postId,
+        author: {
+          id: userId,
+        },
       },
     });
   }

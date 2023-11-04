@@ -12,6 +12,7 @@ import {
   Query,
   UploadedFile,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { PostService } from './post.service';
@@ -25,6 +26,9 @@ import { DataSource, QueryRunner as QR } from 'typeorm';
 import { PostImageService } from './image/image.service';
 import { TransactionInterceptor } from 'src/common/interceptors/transaction.interceptor';
 import { QueryRunner } from 'src/common/decorators/query-runner.decorator';
+import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
+import { CurrentUser } from 'src/common/decorators/user.decorator';
+import { User } from 'src/entities/User';
 
 @Controller('post')
 @UseInterceptors(SuccessInterceptor)
@@ -40,12 +44,13 @@ export class PostController {
   //   return this.postService.getAllPost();
   // }
 
-  @Post('random')
-  async postPostsRandom() {
-    await this.postService.generatePosts();
+  // @Post('random')
+  // @UseGuards(JwtAuthGuard)
+  // async postPostsRandom(@CurrentUser() user: User) {
+  //   await this.postService.generatePosts(user.id);
 
-    return true;
-  }
+  //   return true;
+  // }
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
@@ -114,12 +119,16 @@ export class PostController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @UseInterceptors(TransactionInterceptor)
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createPost(
     @Body() createPostDto: CreatePostDto,
     @QueryRunner() qr: QR,
+    @CurrentUser() user: User,
   ) {
-    const post = await this.postService.createPost(createPostDto, qr);
+    const userId = user.id;
+    console.log(userId);
+    const post = await this.postService.createPost(createPostDto, qr, userId);
     //throw new InternalServerErrorException('일부러넣은 에러');
 
     for (let i = 0; i < createPostDto.images.length; i++) {
@@ -137,11 +146,17 @@ export class PostController {
     return this.postService.getOnePost(post.id, qr);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async updatePost(
     @Param('id') id: number,
     @Body() updataPostDto: UpdatePostDto,
+    @CurrentUser() user: User,
   ) {
+    const userId = user.id;
+    const ee = await this.postService.isPostMine(userId, id);
+
+    console.log(ee);
     return await this.postService.updatePost(id, updataPostDto);
   }
 
