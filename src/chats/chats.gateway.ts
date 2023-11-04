@@ -105,7 +105,7 @@ export class ChatsGateway implements OnGatewayConnection {
   @SubscribeMessage('send_message')
   async sendMessage(
     @MessageBody() dto: CreateMessageDto,
-    @ConnectedSocket() socket: Socket,
+    @ConnectedSocket() socket: Socket & { user: User },
   ) {
     const chatExists = await this.chatsService.checkIfChatExists(dto.chatId);
 
@@ -115,7 +115,10 @@ export class ChatsGateway implements OnGatewayConnection {
       );
     }
 
-    const message = await this.messagesService.createMessage(dto);
+    const message = await this.messagesService.createMessage(
+      dto,
+      socket.user.id,
+    );
 
     socket
       .to(message.chat.id.toString())
