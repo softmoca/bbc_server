@@ -40,7 +40,7 @@ export class CommentController {
     return this.commentService.getCommentById(commentId);
   }
 
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createComment(
     @Param('postId', ParseIntPipe) postId: number,

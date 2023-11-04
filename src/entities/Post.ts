@@ -1,8 +1,9 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Comment } from './Comment';
 import { BaseModel } from './base.entity';
 import { Length } from 'class-validator';
 import { Image } from './Image';
+import { User } from './User';
 
 @Entity('Post', { schema: 'bbc_database' })
 export class Post extends BaseModel {
@@ -36,4 +37,9 @@ export class Post extends BaseModel {
 
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];
+
+  @ManyToOne(() => User, (user) => user.posts, {
+    nullable: false,
+  })
+  author: User;
 }
