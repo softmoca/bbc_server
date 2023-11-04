@@ -73,4 +73,15 @@ export class CommentService {
       author,
     });
   }
+
+  async updateComment(dto: UpdateCommentDto, commentId: number) {
+    const comment = await this.commentRepository.preload({
+      id: commentId,
+      ...dto,
+    });
+
+    const newComment = await this.commentRepository.save(comment);
+
+    return newComment;
+  }
 }

@@ -20,6 +20,7 @@ import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
 import { CreateCommentDto } from './dto/createComment.dto';
 import { User } from 'src/entities/User';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
+import { UpdateCommentDto } from './dto/updateComment.dto';
 
 @Controller('/post/:postId/comment')
 @UseInterceptors(SuccessInterceptor)
@@ -47,5 +48,15 @@ export class CommentController {
     @CurrentUser() user: User,
   ) {
     return this.commentService.createComment(createPostDto, postId, user);
+  }
+
+  @Patch(':cid')
+  async patchComments(
+    @Param('cid') cid: number,
+    @Body() body: UpdateCommentDto,
+  ) {
+    const comment = await this.commentService.updateComment(body, cid);
+
+    return comment;
   }
 }
