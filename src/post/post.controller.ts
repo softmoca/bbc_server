@@ -1,17 +1,13 @@
 import {
-  BadRequestException,
   Body,
   ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
-  InternalServerErrorException,
   Param,
   Patch,
   Post,
   Query,
-  UploadedFile,
-  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -19,7 +15,6 @@ import { PostService } from './post.service';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { CreatePostDto } from './dto/createPost.dto';
 import { UpdatePostDto } from './dto/updatePost.dto';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { PaginatePostDto } from './dto/paginate-post.dto';
 import { ImageModelType } from 'src/entities/Image';
 import { DataSource, QueryRunner as QR } from 'typeorm';
