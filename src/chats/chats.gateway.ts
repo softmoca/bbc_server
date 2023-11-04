@@ -43,11 +43,10 @@ export class ChatsGateway implements OnGatewayConnection {
 
   async handleConnection(socket: Socket & { user: User }) {
     const headers = socket.handshake.headers;
-
     const rawToken = headers['authorization'];
 
     if (!rawToken) {
-      throw new UnauthorizedException('토큰이 없습니다!');
+      socket.disconnect();
     }
 
     try {
@@ -59,9 +58,10 @@ export class ChatsGateway implements OnGatewayConnection {
 
       socket.user = user;
     } catch (e) {
-      throw new WsException('채팅 권한 인증 도중 에러발생');
+      socket.disconnect();
     }
 
+    //console.log(socket);
     return true;
 
     console.log(`on connet called : ${socket.id}`);
@@ -83,7 +83,7 @@ export class ChatsGateway implements OnGatewayConnection {
     @MessageBody() data: CreateChatDto,
     @ConnectedSocket() socket: Socket & { user: User },
   ) {
-    console.log(socket);
+    //console.log(socket);
     const chat = await this.chatsService.createChat(data);
   }
 
