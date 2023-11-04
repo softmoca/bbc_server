@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { Comment } from 'src/entities/Comment';
 import { Post } from 'src/entities/Post';
 import { UpdateCommentDto } from './dto/updateComment.dto';
+import { PaginatePostDto } from 'src/post/dto/paginate-post.dto';
+import { CommonService } from 'src/common/common.service';
 
 @Injectable()
 export class CommentService {
@@ -13,7 +15,16 @@ export class CommentService {
     private readonly commentRepository: Repository<Comment>,
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
+    private readonly commonService: CommonService,
   ) {}
+  async paginateComments(dto: PaginatePostDto, postId: number) {
+    return this.commonService.paginate(
+      dto,
+      this.commentRepository,
+      { where: { post: { id: postId } } },
+      `posts/${postId}/comments`,
+    );
+  }
 
   async findAllComment(id: number) {
     const post = await this.postRepository.findOne({ where: { id } });
