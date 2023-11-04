@@ -13,5 +13,6 @@ import { PostImageService } from './image/image.service';
   imports: [TypeOrmModule.forFeature([Post, Image]), CommonModule],
   controllers: [PostController],
   providers: [PostService, PostImageService],
+  exports: [PostService],
 })
 export class PostModule {}
