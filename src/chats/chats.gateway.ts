@@ -20,8 +20,9 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { SocketCatchHttpExceptionFilter } from 'src/common/exceptions/socket-catch-http.exception-filter';
-import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
+
 import { User } from 'src/entities/User';
+import { SocketBearerTokenGuard } from 'src/auth/guard/socket-bearer-token.guard';
 
 @WebSocketGateway({
   namespace: 'chats', //ws:localhost:3000/chats
@@ -49,7 +50,7 @@ export class ChatsGateway implements OnGatewayConnection {
       forbidNonWhitelisted: true,
     }),
   )
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(SocketBearerTokenGuard)
   @SubscribeMessage('create_chat')
   async createChat(
     @MessageBody() data: CreateChatDto,
