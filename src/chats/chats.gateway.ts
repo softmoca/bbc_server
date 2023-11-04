@@ -50,13 +50,14 @@ export class ChatsGateway implements OnGatewayConnection {
       forbidNonWhitelisted: true,
     }),
   )
+  @UseFilters(SocketCatchHttpExceptionFilter)
   @UseGuards(SocketBearerTokenGuard)
   @SubscribeMessage('create_chat')
   async createChat(
     @MessageBody() data: CreateChatDto,
     @ConnectedSocket() socket: Socket & { user: User },
   ) {
-    console.log('df');
+    console.log(socket);
     const chat = await this.chatsService.createChat(data);
   }
 

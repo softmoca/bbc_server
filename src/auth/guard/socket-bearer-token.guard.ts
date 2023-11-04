@@ -36,7 +36,6 @@ export class SocketBearerTokenGuard implements CanActivate {
 
       socket.user = user;
       socket.token = token;
-      console.log(socket);
     } catch (e) {
       throw new WsException('채팅 권한 인증 도중 에러발생');
     }
