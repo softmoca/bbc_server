@@ -42,4 +42,11 @@ export class UserService {
 
     return user;
   }
+  async getUserByEmail(email: string) {
+    return this.userRepository.findOne({
+      where: {
+        email,
+      },
+    });
+  }
 }
