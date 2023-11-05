@@ -18,13 +18,14 @@ import { UpdatePostDto } from './dto/updatePost.dto';
 import { PaginatePostDto } from './dto/paginate-post.dto';
 import { ImageModelType } from 'src/entities/Image';
 import { DataSource, QueryRunner as QR } from 'typeorm';
-import { PostImageService } from './image/image.service';
+
 import { TransactionInterceptor } from 'src/common/interceptors/transaction.interceptor';
 import { QueryRunner } from 'src/common/decorators/query-runner.decorator';
 import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { User } from 'src/entities/User';
 import { IsPostMineGuard } from 'src/auth/guard/is-post-mine.guard';
+import { PostImageService } from './image/image.service';
 
 @Controller('post')
 @UseInterceptors(SuccessInterceptor)
@@ -67,7 +68,8 @@ export class PostController {
     const userId = user.id;
     console.log(userId);
     const post = await this.postService.createPost(createPostDto, userId, qr);
-    //throw new InternalServerErrorException('일부러넣은 에러');
+
+    console.log(createPostDto.images);
 
     for (let i = 0; i < createPostDto.images.length; i++) {
       await this.postImageService.createPostImage(

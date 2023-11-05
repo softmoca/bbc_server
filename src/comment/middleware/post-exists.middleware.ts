@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from 'express';
 import {
   Injectable,
   NestMiddleware,
-  Logger,
   BadGatewayException,
 } from '@nestjs/common';
 

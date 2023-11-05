@@ -1,9 +1,5 @@
 import { DEFAULT_POST_FIND_OPTIONS } from './../common/const/default-post-find-option.const';
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Post } from 'src/entities/Post';
 import {

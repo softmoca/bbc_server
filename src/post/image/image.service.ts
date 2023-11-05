@@ -23,6 +23,8 @@ export class PostImageService {
     const repository = this.getImageModelRepository(qr);
 
     const tempFilePath = join(TEMP_FOLDER_PATH, createImageDto.path);
+    // console.log(TEMP_FOLDER_PATH);
+    // console.log(tempFilePath);
 
     try {
       await promises.access(tempFilePath);

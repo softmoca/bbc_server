@@ -7,13 +7,15 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { SignUpDto } from './dto/signUp.dto';
+
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
-import { SignInDto } from './dto/signIn.dto';
+
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
 import { User } from 'src/entities/User';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
+import { SignUpDto } from './dto/signUp.dto';
+import { SignInDto } from './dto/signIn.dto';
 
 @Controller('user')
 @UseInterceptors(SuccessInterceptor)

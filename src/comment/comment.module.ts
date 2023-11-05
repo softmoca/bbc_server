@@ -8,7 +8,7 @@ import { Post } from 'src/entities/Post';
 import { CommonModule } from 'src/common/common.module';
 import { PostExistsMiddleware } from './middleware/post-exists.middleware';
 import { PostService } from 'src/post/post.service';
-import { PostImageService } from 'src/post/image/image.service';
+
 import { Image } from 'src/entities/Image';
 
 @Module({
@@ -18,7 +18,7 @@ import { Image } from 'src/entities/Image';
     PostModule,
   ],
   controllers: [CommentController],
-  providers: [CommentService, CommentService, PostService, PostImageService],
+  providers: [CommentService, CommentService, PostService],
 })
 export class CommentModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
