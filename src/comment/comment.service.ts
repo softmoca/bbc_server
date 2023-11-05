@@ -111,4 +111,10 @@ export class CommentService {
       },
     });
   }
+
+  getRepository(qr?: QueryRunner) {
+    return qr
+      ? qr.manager.getRepository<Comment>(Comment)
+      : this.commentRepository;
+  }
 }
