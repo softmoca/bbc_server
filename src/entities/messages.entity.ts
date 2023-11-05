@@ -7,7 +7,10 @@ import { BaseModel } from './base.entity';
 
 @Entity()
 export class Messages extends BaseModel {
-  @ManyToOne(() => Chats, (chat) => chat.messages)
+  @ManyToOne(() => Chats, (chat) => chat.messages, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   chat: Chats;
 
   @ManyToOne(() => User, (user) => user.messages, {

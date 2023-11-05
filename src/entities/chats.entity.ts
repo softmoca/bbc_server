@@ -11,6 +11,6 @@ export class Chats extends BaseModel {
   })
   users: User[];
 
-  @OneToMany(() => Messages, (message) => message.chat)
+  @OneToMany(() => Messages, (message) => message.chat, { cascade: true })
   messages: Messages;
 }
