@@ -80,6 +80,7 @@ export class CommentController {
     return comment;
   }
 
+  //댓글 삭제하기
   @UseGuards(IsCommentMineGuard)
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(TransactionInterceptor)

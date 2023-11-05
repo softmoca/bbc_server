@@ -15,17 +15,11 @@ import { ChatsService } from './chats.service';
 import { EnterChatDto } from './dto/enter-chat.dto';
 import { CreateMessageDto } from './messages/dto/create-message.dto';
 import { MessagesService } from './messages/messages.service';
-import {
-  UnauthorizedException,
-  UseFilters,
-  UseGuards,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { UseFilters, UsePipes, ValidationPipe } from '@nestjs/common';
 import { SocketCatchHttpExceptionFilter } from 'src/common/exceptions/socket-catch-http.exception-filter';
 
 import { User } from 'src/entities/User';
-import { SocketBearerTokenGuard } from 'src/auth/guard/socket-bearer-token.guard';
+
 import { AuthService } from 'src/auth/auth.service';
 import { UserService } from 'src/user/user.service';
 

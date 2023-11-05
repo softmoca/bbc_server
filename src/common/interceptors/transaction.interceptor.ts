@@ -18,8 +18,7 @@ export class TransactionInterceptor implements NestInterceptor {
     const qr = await this.dataSource.createQueryRunner();
 
     await qr.connect();
-    // transaction isolation level에 대해 설명한다.
-    // https://www.postgresql.org/docs/current/transaction-iso.html
+
     await qr.startTransaction();
 
     req.queryRunner = qr;
