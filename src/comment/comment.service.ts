@@ -1,3 +1,4 @@
+import { DEFAULT_COMMENT_FIND_OPTIONS } from './../common/const/default-comment-find-option.const';
 import {
   BadRequestException,
   Injectable,
@@ -26,7 +27,7 @@ export class CommentService {
     return this.commonService.paginate(
       dto,
       this.commentRepository,
-      { relations: { author: true } },
+      { ...DEFAULT_COMMENT_FIND_OPTIONS },
       `posts/${postId}/comments`,
     );
   }
@@ -47,11 +48,9 @@ export class CommentService {
 
   async getCommentById(id: number) {
     const commnet = await this.commentRepository.findOne({
+      ...DEFAULT_COMMENT_FIND_OPTIONS,
       where: {
         id,
-      },
-      relations: {
-        author: true,
       },
     });
 
