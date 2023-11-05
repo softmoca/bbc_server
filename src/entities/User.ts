@@ -52,7 +52,7 @@ export class User extends BaseModel {
   @JoinTable()
   chats: Chats[];
 
-  @OneToMany(() => Messages, (message) => message.author)
+  @OneToMany(() => Messages, (message) => message.author, { cascade: true })
   messages: Messages[];
 
   @OneToMany(() => Comment, (comment) => comment.author)

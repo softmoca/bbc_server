@@ -12,9 +12,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
-
 import { CommentService } from './comment.service';
-
 import { PaginatePostDto } from 'src/post/dto/paginate-post.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
 import { CreateCommentDto } from './dto/createComment.dto';
@@ -34,6 +32,7 @@ export class CommentController {
     private postService: PostService,
   ) {}
 
+  //댓글 최신순으로 가져오기
   @Get()
   getComments(
     @Param('postId', ParseIntPipe) postId: number,
@@ -42,11 +41,13 @@ export class CommentController {
     return this.commentService.paginateComments(query, postId);
   }
 
+  //특정 댓글 가져오기
   @Get('/:commentId')
   getCommentById(@Param('commentId') commentId: number) {
     return this.commentService.getCommentById(commentId);
   }
 
+  //댓글 만들기
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(TransactionInterceptor)
   @Post()
@@ -68,6 +69,7 @@ export class CommentController {
     return newComment;
   }
 
+  //댓글 수정하기
   @Patch(':cid')
   async patchComments(
     @Param('cid') cid: number,
