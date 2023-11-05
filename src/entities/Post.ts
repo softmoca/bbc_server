@@ -29,7 +29,7 @@ export class Post extends BaseModel {
   @Column('varchar', { name: 'chatRoomTitle', length: 20 })
   chatRoomTitle: string;
 
-  @OneToMany((type) => Image, (image) => image.post)
+  @OneToMany((type) => Image, (image) => image.post, { cascade: true })
   images: Image[];
 
   @OneToMany(() => Comment, (comment) => comment.post, { cascade: true })

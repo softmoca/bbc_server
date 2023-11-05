@@ -6,7 +6,10 @@ import { User } from './User';
 
 @Entity('Comment', { schema: 'bbc_database' })
 export class Comment extends BaseModel {
-  @ManyToOne(() => User, (user) => user.postComments)
+  @ManyToOne(() => User, (user) => user.postComments, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   author: User;
 
   @ManyToOne(() => Post, (post) => post.comments, {
