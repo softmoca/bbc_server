@@ -29,9 +29,6 @@ export class Post extends BaseModel {
   @Column('varchar', { name: 'chatRoomTitle', length: 20 })
   chatRoomTitle: string;
 
-  @OneToMany(() => Comment, (comments) => comments.Post)
-  Comments: Comment[];
-
   @OneToMany((type) => Image, (image) => image.post)
   images: Image[];
 

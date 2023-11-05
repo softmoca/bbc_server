@@ -23,11 +23,4 @@ export class Comment extends BaseModel {
   @IsNumber()
   @Column('int', { name: 'commentLike', default: 0 })
   commentLike: number;
-
-  @ManyToOne(() => Post, (post) => post.Comments, {
-    onDelete: 'SET NULL',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn([{ name: 'CommentPostIdx', referencedColumnName: 'id' }])
-  Post: Post;
 }
