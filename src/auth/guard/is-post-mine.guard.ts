@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 
 import { Request } from 'express';
-import { CommentService } from 'src/comment/comment.service';
+
 import { User } from 'src/entities/User';
 import { PostService } from 'src/post/post.service';
 
@@ -34,7 +34,9 @@ export class IsPostMineGuard implements CanActivate {
     const isOk = await this.postService.isPostMine(user.id, parseInt(postId));
 
     if (!isOk) {
-      throw new ForbiddenException(' 자신의글만 수정삭제 할  수 있습니다. ');
+      throw new ForbiddenException(
+        ' 자신의 게시글만 수정삭제 할  수 있습니다. ',
+      );
     }
 
     return true;

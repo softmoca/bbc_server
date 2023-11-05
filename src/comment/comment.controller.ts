@@ -21,6 +21,7 @@ import { CreateCommentDto } from './dto/createComment.dto';
 import { User } from 'src/entities/User';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { UpdateCommentDto } from './dto/updateComment.dto';
+import { IsCommentMineGuard } from 'src/auth/guard/is-comment-mine.guard';
 
 @Controller('/post/:postId/comment')
 @UseInterceptors(SuccessInterceptor)
@@ -60,8 +61,14 @@ export class CommentController {
     return comment;
   }
 
-  @Delete(':cid')
-  async deleteComment(@Param('cid') cid: number) {
+  @UseGuards(IsCommentMineGuard)
+  @UseGuards(JwtAuthGuard)
+  @Delete(':commentId')
+  async deleteComment(
+    @Param('commentId') cid: number,
+
+    @CurrentUser() user: User,
+  ) {
     return await this.commentService.deleteComment(cid);
   }
 }
