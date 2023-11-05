@@ -58,6 +58,6 @@ export class User extends BaseModel {
   @OneToMany(() => Comment, (comment) => comment.author, { cascade: true })
   postComments: Comment[];
 
-  @OneToMany(() => Post, (post) => post.author)
+  @OneToMany(() => Post, (post) => post.author, { cascade: true })
   posts: Post[];
 }
