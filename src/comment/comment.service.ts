@@ -65,8 +65,11 @@ export class CommentService {
     createCommentDto: CreateCommentDto,
     postId: number,
     author: User,
+    qr?: QueryRunner,
   ): Promise<Comment> {
-    return await this.commentRepository.save({
+    const repository = this.getRepository(qr);
+
+    return repository.save({
       ...createCommentDto,
       post: { id: postId },
       author,
@@ -84,8 +87,10 @@ export class CommentService {
     return newComment;
   }
 
-  async deleteComment(id: number) {
-    const commnet = await this.commentRepository.findOne({
+  async deleteComment(id: number, qr?: QueryRunner) {
+    const repository = this.getRepository(qr);
+
+    const commnet = await repository.findOne({
       where: { id },
     });
 
@@ -93,7 +98,7 @@ export class CommentService {
       throw new BadRequestException('존재하지 않는 댓글입니다.');
     }
 
-    await this.commentRepository.delete(id);
+    await repository.delete(id);
 
     return id;
   }

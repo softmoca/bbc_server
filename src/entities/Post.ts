@@ -42,4 +42,7 @@ export class Post extends BaseModel {
     nullable: false,
   })
   author: User;
+
+  @Column({ default: 0 })
+  commentCount: number;
 }
