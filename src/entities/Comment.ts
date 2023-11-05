@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Post } from './Post';
 import { BaseModel } from './base.entity';
 import { IsNumber, IsString, Length } from 'class-validator';
@@ -9,7 +9,10 @@ export class Comment extends BaseModel {
   @ManyToOne(() => User, (user) => user.postComments)
   author: User;
 
-  @ManyToOne(() => Post, (post) => post.comments)
+  @ManyToOne(() => Post, (post) => post.comments, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   post: Post;
 
   @Length(1, 100)

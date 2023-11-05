@@ -32,7 +32,7 @@ export class Post extends BaseModel {
   @OneToMany((type) => Image, (image) => image.post)
   images: Image[];
 
-  @OneToMany(() => Comment, (comment) => comment.post)
+  @OneToMany(() => Comment, (comment) => comment.post, { cascade: true })
   comments: Comment[];
 
   @ManyToOne(() => User, (user) => user.posts, {
