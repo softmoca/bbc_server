@@ -24,6 +24,7 @@ import { QueryRunner } from 'src/common/decorators/query-runner.decorator';
 import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { User } from 'src/entities/User';
+import { IsPostMineGuard } from 'src/auth/guard/is-post-mine.guard';
 
 @Controller('post')
 @UseInterceptors(SuccessInterceptor)
@@ -38,9 +39,6 @@ export class PostController {
   @UseGuards(JwtAuthGuard)
   async postPostsRandom(@CurrentUser() user: User) {
     const userId = user.id;
-    console.log('dsfsdf');
-    console.log(userId);
-    console.log('dsfsdf');
     await this.postService.generatePosts(userId);
 
     return true;
@@ -86,10 +84,11 @@ export class PostController {
     return this.postService.getOnePost(post.id, qr);
   }
 
+  @UseGuards(IsPostMineGuard)
   @UseGuards(JwtAuthGuard)
-  @Patch(':id')
+  @Patch(':postId')
   async updatePost(
-    @Param('id') id: number,
+    @Param('postId') id: number,
     @Body() updataPostDto: UpdatePostDto,
     @CurrentUser() user: User,
   ) {

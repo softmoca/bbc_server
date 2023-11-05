@@ -211,6 +211,9 @@ export class PostService {
           id: userId,
         },
       },
+      relations: {
+        author: true,
+      },
     });
   }
 
