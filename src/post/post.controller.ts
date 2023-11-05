@@ -34,24 +34,77 @@ export class PostController {
     private readonly dataSource: DataSource,
   ) {}
 
-  // @Get()
-  // getAllPost() {
-  //   return this.postService.getAllPost();
-  // }
+  @Post('random')
+  @UseGuards(JwtAuthGuard)
+  async postPostsRandom(@CurrentUser() user: User) {
+    const userId = user.id;
+    console.log('dsfsdf');
+    console.log(userId);
+    console.log('dsfsdf');
+    await this.postService.generatePosts(userId);
 
-  // @Post('random')
-  // @UseGuards(JwtAuthGuard)
-  // async postPostsRandom(@CurrentUser() user: User) {
-  //   await this.postService.generatePosts(user.id);
-
-  //   return true;
-  // }
+    return true;
+  }
 
   @Get()
   @UseInterceptors(ClassSerializerInterceptor)
   getPost(@Query() query: PaginatePostDto) {
     return this.postService.paginatePosts(query);
   }
+
+  @Get(':id')
+  getOnePost(@Param('id') id: number) {
+    return this.postService.getOnePost(id);
+  }
+
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseInterceptors(TransactionInterceptor)
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  async createPost(
+    @Body() createPostDto: CreatePostDto,
+    @QueryRunner() qr: QR,
+    @CurrentUser() user: User,
+  ) {
+    const userId = user.id;
+    console.log(userId);
+    const post = await this.postService.createPost(createPostDto, userId, qr);
+    //throw new InternalServerErrorException('일부러넣은 에러');
+
+    for (let i = 0; i < createPostDto.images.length; i++) {
+      await this.postImageService.createPostImage(
+        {
+          post,
+          path: createPostDto.images[i],
+          order: i,
+          type: ImageModelType.postImage,
+        },
+        qr,
+      );
+    }
+
+    return this.postService.getOnePost(post.id, qr);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  async updatePost(
+    @Param('id') id: number,
+    @Body() updataPostDto: UpdatePostDto,
+    @CurrentUser() user: User,
+  ) {
+    const userId = user.id;
+    const ee = await this.postService.isPostMine(userId, id);
+
+    console.log(ee);
+    return await this.postService.updatePost(id, updataPostDto);
+  }
+
+  @Delete(':id')
+  async deletePost(@Param('id') id: number) {
+    return await this.postService.deletePost(id);
+  }
+
   @Get('/dormitory')
   getDormitoryPost() {
     return this.postService.getDormitoryPost();
@@ -105,58 +158,5 @@ export class PostController {
   @Get('/nuri')
   getNuriPost() {
     return this.postService.getNuriPost();
-  }
-
-  @Get(':id')
-  getOnePost(@Param('id') id: number) {
-    return this.postService.getOnePost(id);
-  }
-
-  @UseInterceptors(ClassSerializerInterceptor)
-  @UseInterceptors(TransactionInterceptor)
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  async createPost(
-    @Body() createPostDto: CreatePostDto,
-    @QueryRunner() qr: QR,
-    @CurrentUser() user: User,
-  ) {
-    const userId = user.id;
-    console.log(userId);
-    const post = await this.postService.createPost(createPostDto, qr, userId);
-    //throw new InternalServerErrorException('일부러넣은 에러');
-
-    for (let i = 0; i < createPostDto.images.length; i++) {
-      await this.postImageService.createPostImage(
-        {
-          post,
-          path: createPostDto.images[i],
-          order: i,
-          type: ImageModelType.postImage,
-        },
-        qr,
-      );
-    }
-
-    return this.postService.getOnePost(post.id, qr);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Patch(':id')
-  async updatePost(
-    @Param('id') id: number,
-    @Body() updataPostDto: UpdatePostDto,
-    @CurrentUser() user: User,
-  ) {
-    const userId = user.id;
-    const ee = await this.postService.isPostMine(userId, id);
-
-    console.log(ee);
-    return await this.postService.updatePost(id, updataPostDto);
-  }
-
-  @Delete(':id')
-  async deletePost(@Param('id') id: number) {
-    return await this.postService.deletePost(id);
   }
 }
