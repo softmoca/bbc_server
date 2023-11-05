@@ -22,11 +22,17 @@ import { User } from 'src/entities/User';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { UpdateCommentDto } from './dto/updateComment.dto';
 import { IsCommentMineGuard } from 'src/auth/guard/is-comment-mine.guard';
-
+import { TransactionInterceptor } from 'src/common/interceptors/transaction.interceptor';
+import { QueryRunner } from 'src/common/decorators/query-runner.decorator';
+import { QueryRunner as QR } from 'typeorm';
+import { PostService } from 'src/post/post.service';
 @Controller('/post/:postId/comment')
 @UseInterceptors(SuccessInterceptor)
 export class CommentController {
-  constructor(private commentService: CommentService) {}
+  constructor(
+    private commentService: CommentService,
+    private postService: PostService,
+  ) {}
 
   @Get()
   getComments(
@@ -42,13 +48,24 @@ export class CommentController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(TransactionInterceptor)
   @Post()
   async createComment(
     @Param('postId', ParseIntPipe) postId: number,
     @Body() createPostDto: CreateCommentDto,
     @CurrentUser() user: User,
+    @QueryRunner() qr: QR,
   ) {
-    return this.commentService.createComment(createPostDto, postId, user);
+    const newComment = await this.commentService.createComment(
+      createPostDto,
+      postId,
+      user,
+      qr,
+    );
+
+    await this.postService.incrementCommentCount(postId, qr);
+
+    return newComment;
   }
 
   @Patch(':cid')
@@ -61,14 +78,19 @@ export class CommentController {
     return comment;
   }
 
-  @UseGuards(IsCommentMineGuard)
-  @UseGuards(JwtAuthGuard)
-  @Delete(':commentId')
-  async deleteComment(
-    @Param('commentId') cid: number,
+  //   @UseGuards(IsCommentMineGuard)
+  //   @UseGuards(JwtAuthGuard)
+  //   @UseInterceptors(TransactionInterceptor)
+  //   @Delete(':commentId')
+  //   async deleteComment(
+  //     @Param('commentId') commentId: number,
+  //     @Param('postId') postId: number
+  //     @CurrentUser() user: User,
+  //     @QueryRunner() qr:QR
+  //   ) {
 
-    @CurrentUser() user: User,
-  ) {
-    return await this.commentService.deleteComment(cid);
-  }
+  // const resp= await this.commentService.deleteComment(commentId,qr)
+
+  //    await this.postService.deleteComment(PostId,qr);
+  //   }
 }
