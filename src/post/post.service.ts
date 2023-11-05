@@ -229,14 +229,17 @@ export class PostService {
     );
   }
 
-  // async decrementCommentCount(PostId:number,qr?:QueryRunner){
+  async decrementCommentCount(PostId: number, qr?: QueryRunner) {
+    const repository = this.getRepository(qr);
 
-  //   const repository= this.getRepository(qr);
-
-  //   await repository.decrement({
-  //     id:PostId,
-  //   },'commentCount',1)
-  // }
+    await repository.decrement(
+      {
+        id: PostId,
+      },
+      'commentCount',
+      1,
+    );
+  }
 
   async getDormitoryPost(): Promise<Post[]> {
     return await this.postRepository.find({
