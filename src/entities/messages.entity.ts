@@ -10,7 +10,10 @@ export class Messages extends BaseModel {
   @ManyToOne(() => Chats, (chat) => chat.messages)
   chat: Chats;
 
-  @ManyToOne(() => User, (user) => user.messages, { onDelete: 'SET NULL' })
+  @ManyToOne(() => User, (user) => user.messages, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
   author: User;
 
   @Column()

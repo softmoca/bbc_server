@@ -40,6 +40,8 @@ export class Post extends BaseModel {
 
   @ManyToOne(() => User, (user) => user.posts, {
     nullable: false,
+
+    onUpdate: 'CASCADE',
   })
   author: User;
 
