@@ -78,19 +78,19 @@ export class CommentController {
     return comment;
   }
 
-    @UseGuards(IsCommentMineGuard)
-    @UseGuards(JwtAuthGuard)
-    @UseInterceptors(TransactionInterceptor)
-    @Delete(':commentId')
-    async deleteComment(
-      @Param('commentId') commentId: number,
-      @Param('postId') postId: number
-      @CurrentUser() user: User,
-      @QueryRunner() qr:QR
-    ) {
+  @UseGuards(IsCommentMineGuard)
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(TransactionInterceptor)
+  @Delete(':commentId')
+  async deleteComment(
+    @Param('commentId') commentId: number,
+    @Param('postId') postId: number,
+    @CurrentUser() user: User,
+    @QueryRunner() qr: QR,
+  ) {
+    const resp = await this.commentService.deleteComment(commentId, qr);
 
-  const resp= await this.commentService.deleteComment(commentId,qr)
-
-     await this.postService.deleteComment(PostId,qr);
-    }
+    await this.postService.decrementCommentCount(postId, qr);
+    return resp;
+  }
 }
