@@ -1,3 +1,4 @@
+import { DEFAULT_POST_FIND_OPTIONS } from './../common/const/default-post-find-option.const';
 import {
   BadRequestException,
   Injectable,
@@ -17,14 +18,7 @@ import { UpdatePostDto } from './dto/updatePost.dto';
 import { PaginatePostDto } from './dto/paginate-post.dto';
 import { HOST, PROTOCOL } from 'src/common/const/env.const';
 import { CommonService } from 'src/common/common.service';
-import {
-  PUBLIC_FOLDER_PATH,
-  POST_IMAGE_PATH,
-  TEMP_FOLDER_PATH,
-} from 'src/common/const/path.const';
-import { basename, join } from 'path';
-import { promises } from 'fs';
-import { CreatePostImageDto } from './image/dto/create-image.dto';
+
 import { Image } from 'src/entities/Image';
 
 @Injectable()
@@ -41,7 +35,7 @@ export class PostService {
     return this.commonService.paginate(
       dto,
       this.postRepository,
-      { relations: ['images', 'author'] },
+      { ...DEFAULT_POST_FIND_OPTIONS },
       'post',
     );
   }
