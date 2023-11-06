@@ -119,6 +119,7 @@ export class PostController {
     @CurrentUser() user: User,
   ) {
     const userId = user.id;
+
     //console.log(userId);
     const post = await this.postService.createPost(createPostDto, userId, qr);
 
