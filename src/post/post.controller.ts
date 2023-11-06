@@ -119,10 +119,10 @@ export class PostController {
     @CurrentUser() user: User,
   ) {
     const userId = user.id;
-    console.log(userId);
+    //console.log(userId);
     const post = await this.postService.createPost(createPostDto, userId, qr);
 
-    console.log(createPostDto.images);
+    //console.log(createPostDto.images);
 
     for (let i = 0; i < createPostDto.images.length; i++) {
       await this.postImageService.createPostImage(

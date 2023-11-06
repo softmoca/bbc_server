@@ -17,7 +17,6 @@ import * as multer from 'multer';
       },
       fileFilter: (req, file, cb) => {
         // 확장자를 가져오는 함수
-
         const ext = extname(file.originalname);
         if (ext !== '.jpg' && ext !== '.jpeg' && ext !== '.png') {
           // 첫번째 파라미터에는 에러가 있을경우 에러 정보를 넣어준다.

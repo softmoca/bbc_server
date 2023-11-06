@@ -135,7 +135,7 @@ export class PostService {
   }
 
   async generatePosts(userId: number) {
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 10; i++) {
       await this.createPost(
         {
           postTitle: `임의로 생성된 포스트 제목 ${i}`,
