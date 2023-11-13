@@ -7,8 +7,13 @@ import { extname } from 'path';
 import { v4 as uuid } from 'uuid';
 import { TEMP_FOLDER_PATH } from './const/path.const';
 import * as multer from 'multer';
+import { Board } from 'src/entities/Board.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Post } from 'src/entities/Post';
+
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Post, Board]),
     MulterModule.register({
       limits: {
         // 파일 크기 제한

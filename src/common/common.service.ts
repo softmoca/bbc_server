@@ -9,9 +9,19 @@ import {
 import { BaseModel } from 'src/entities/base.entity';
 import { FILTER_MAPPER } from './const/filter-mapper.const';
 import { HOST, PROTOCOL } from './const/env.const';
+import { Post } from 'src/entities/Post';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Board } from 'src/entities/Board.entity';
 
 @Injectable()
 export class CommonService {
+  constructor(
+    @InjectRepository(Post)
+    private readonly postRepository: Repository<Post>,
+    @InjectRepository(Board)
+    private readonly boardRepository: Repository<Board>,
+  ) {}
+
   async paginate<T extends BaseModel>(
     dto: BasePaginationDto,
     repository: Repository<T>,
@@ -57,7 +67,6 @@ export class CommonService {
     path: string,
   ) {
     const findOptions = this.composeFindOptions<T>(dto);
-    console.log(findOptions);
 
     const results = await repository.find({
       ...findOptions,
@@ -155,14 +164,16 @@ export class CommonService {
     };
   }
 
-  private parseWhereFilter<T extends BaseModel>(
+  private async parseWhereFilter<T extends BaseModel>(
     key: string,
     value: string,
-  ): FindOptionsWhere<T> | FindOptionsOrder<T> {
+  ): Promise<FindOptionsWhere<T> | FindOptionsOrder<T>> {
     const where: FindOptionsWhere<T> = {};
 
     // 예를들어 where__id__more_than 는 ['where', 'id', 'more_than'] 으로 나눌 수 있다.
     const split = key.split('__');
+
+    console.log(split);
 
     if (split.length !== 2 && split.length !== 3) {
       throw new BadRequestException(
@@ -186,6 +197,19 @@ export class CommonService {
       // where__id__more_than의 경우  where는 버려도 되고 두번째 값은 필터할 키값, 세번째 값은 오퍼레이터 유틸리티
       // FILTER_MAPPER에 미리 정의해둔 값들로 field 값에 FILTER_MAPPER에서 해당되는 utility를 가져와 적용
       const [_, field, operator] = split;
+
+      if (field === 'buildingName') {
+        console.log(value);
+        const Board = await this.boardRepository.findOne({
+          where: { BoardTitle: value },
+        });
+
+        console.log(Board);
+
+        // const field = 'id';
+        // console.log(field);
+      }
+
       const values = value.toString().split(',');
 
       where[field] = FILTER_MAPPER[operator](
@@ -193,6 +217,7 @@ export class CommonService {
       );
     }
 
+    //console.log(where);
     return where;
   }
 }

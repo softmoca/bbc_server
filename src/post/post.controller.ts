@@ -108,7 +108,9 @@ export class PostController {
 
   @Get('/getBoardPost')
   getBoardPost(@Query() query: PaginateBoardPostDto) {
-    return this.postService.paginatePosts(query);
+    //console.log(query);
+
+    return this.postService.getBoardPost(query);
   }
 
   @Get(':id')
