@@ -73,6 +73,7 @@ export class PostService {
           buildingName: '참빛관',
           chatRoomTitle: `임의로 생성된 채팅방 이름 ${i}`,
           images: [],
+          boardName: `임의로 생성된 게시판 이름 ${i}`,
         },
         userId,
       );
