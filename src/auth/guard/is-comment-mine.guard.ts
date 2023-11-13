@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 
 import { Request } from 'express';
-import { CommentService } from 'src/comment/comment.service';
+import { CommentService } from 'src/post/comment/comment.service';
 import { User } from 'src/entities/User';
 
 @Injectable()

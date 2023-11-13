@@ -4,6 +4,7 @@ import { BaseModel } from './base.entity';
 import { Length } from 'class-validator';
 import { Image } from './Image';
 import { User } from './User';
+import { Board } from './Board.entity';
 
 @Entity('Post', { schema: 'bbc_database' })
 export class Post extends BaseModel {
@@ -44,4 +45,10 @@ export class Post extends BaseModel {
 
   @Column({ default: 0 })
   commentCount: number;
+
+  @ManyToOne(() => Board, (board) => board.posts, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  board: Board;
 }

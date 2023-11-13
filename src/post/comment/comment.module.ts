@@ -1,4 +1,4 @@
-import { PostModule } from './../post/post.module';
+import { PostModule } from '../post.module';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { CommentController } from './comment.controller';
 import { CommentService } from './comment.service';

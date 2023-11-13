@@ -15,7 +15,7 @@ import { AuthModule } from './auth/auth.module';
 import { Post } from './entities/Post';
 import { Comment } from './entities/Comment';
 import { PostModule } from './post/post.module';
-import { CommentModule } from './comment/comment.module';
+import { CommentModule } from './post/comment/comment.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { PUBLIC_FOLDER_PATH } from './common/const/path.const';
 import { Image } from './entities/Image';
@@ -23,6 +23,7 @@ import { ChatsModule } from './chats/chats.module';
 import { Chats } from './entities/chats.entity';
 import { Messages } from './entities/messages.entity';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { Board } from './entities/Board.entity';
 
 @Module({
   imports: [
@@ -41,7 +42,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User, Post, Comment, Image, Chats, Messages],
+      entities: [User, Post, Comment, Image, Chats, Messages, Board],
       synchronize: true,
       //logging: true,
       charset: 'utf8mb4',

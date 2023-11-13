@@ -1,4 +1,4 @@
-import { PostService } from './../../post/post.service';
+import { PostService } from '../../post.service';
 import { Request, Response, NextFunction } from 'express';
 import {
   Injectable,

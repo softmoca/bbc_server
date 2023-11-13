@@ -1,4 +1,4 @@
-import { DEFAULT_COMMENT_FIND_OPTIONS } from './../common/const/default-comment-find-option.const';
+import { DEFAULT_COMMENT_FIND_OPTIONS } from '../../common/const/default-comment-find-option.const';
 import {
   BadRequestException,
   Injectable,

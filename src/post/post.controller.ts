@@ -123,7 +123,7 @@ export class PostController {
     //console.log(userId);
     const post = await this.postService.createPost(createPostDto, userId, qr);
 
-    //console.log(createPostDto.images);
+    console.log(createPostDto);
 
     for (let i = 0; i < createPostDto.images.length; i++) {
       await this.postImageService.createPostImage(
@@ -155,8 +155,8 @@ export class PostController {
     return await this.postService.updatePost(id, updataPostDto);
   }
 
-  @Delete(':id')
-  async deletePost(@Param('id') id: number) {
+  @Delete(':postId')
+  async deletePost(@Param('postId') id: number) {
     return await this.postService.deletePost(id);
   }
 }
