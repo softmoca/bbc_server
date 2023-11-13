@@ -26,6 +26,7 @@ import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { User } from 'src/entities/User';
 import { IsPostMineGuard } from 'src/auth/guard/is-post-mine.guard';
 import { PostImageService } from './image/image.service';
+import { PaginateBoardPostDto } from './dto/paginate-board.dto';
 
 @Controller('post')
 @UseInterceptors(SuccessInterceptor)
@@ -35,8 +36,10 @@ export class PostController {
     private readonly postImageService: PostImageService,
     private readonly dataSource: DataSource,
   ) {}
+
   @Get('/bima')
   getBimaPost() {
+    console.log('aaaa');
     return this.postService.getBimaPost();
   }
   @Get('/dormitory')
@@ -99,8 +102,12 @@ export class PostController {
   }
 
   @Get()
-  @UseInterceptors(ClassSerializerInterceptor)
   getPost(@Query() query: PaginatePostDto) {
+    return this.postService.paginatePosts(query);
+  }
+
+  @Get('/getBoardPost')
+  getBoardPost(@Query() query: PaginateBoardPostDto) {
     return this.postService.paginatePosts(query);
   }
 

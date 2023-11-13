@@ -11,4 +11,7 @@ export class CreatePostDto extends PickType(Post, [
   @IsString({ each: true })
   @IsOptional()
   images?: string[] = [];
+
+  @IsString()
+  boardName: string;
 }

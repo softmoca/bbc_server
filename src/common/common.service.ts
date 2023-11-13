@@ -53,11 +53,11 @@ export class CommonService {
   async cursorPaginate<T extends BaseModel>(
     dto: BasePaginationDto,
     repository: Repository<T>,
-
     overrideFindOptions: FindManyOptions<T> = {},
     path: string,
   ) {
     const findOptions = this.composeFindOptions<T>(dto);
+    console.log(findOptions);
 
     const results = await repository.find({
       ...findOptions,
@@ -187,10 +187,12 @@ export class CommonService {
       // FILTER_MAPPER에 미리 정의해둔 값들로 field 값에 FILTER_MAPPER에서 해당되는 utility를 가져와 적용
       const [_, field, operator] = split;
       const values = value.toString().split(',');
+
       where[field] = FILTER_MAPPER[operator](
         values.length > 1 ? values : value,
       );
     }
+
     return where;
   }
 }
