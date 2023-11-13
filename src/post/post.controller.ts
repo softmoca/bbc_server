@@ -128,9 +128,8 @@ export class PostController {
     const userId = user.id;
 
     //console.log(userId);
+    // console.log(createPostDto);
     const post = await this.postService.createPost(createPostDto, userId, qr);
-
-    console.log(createPostDto);
 
     for (let i = 0; i < createPostDto.images.length; i++) {
       await this.postImageService.createPostImage(

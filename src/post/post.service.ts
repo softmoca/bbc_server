@@ -16,6 +16,7 @@ import { HOST, PROTOCOL } from 'src/common/const/env.const';
 import { CommonService } from 'src/common/common.service';
 
 import { Image } from 'src/entities/Image';
+import { Board } from 'src/entities/Board.entity';
 
 @Injectable()
 export class PostService {
@@ -25,6 +26,8 @@ export class PostService {
     private readonly commonService: CommonService,
     @InjectRepository(Image)
     private readonly imageRepository: Repository<Image>,
+    @InjectRepository(Board)
+    private readonly boardRepository: Repository<Board>,
   ) {}
 
   async paginatePosts(dto: PaginatePostDto) {
@@ -43,21 +46,6 @@ export class PostService {
       { ...DEFAULT_POST_FIND_OPTIONS },
       'post/getBoardPost',
     );
-  }
-
-  async getOnePost(id: number, qr?: QueryRunner): Promise<Post> {
-    const repository = this.getRepository(qr);
-
-    const post = await repository.findOne({
-      where: { id },
-      relations: ['images', 'author'],
-    });
-
-    if (!post) {
-      throw new NotFoundException(`Post with ID ${id} not found`);
-    }
-
-    return post;
   }
 
   getRepository(qr?: QueryRunner) {
@@ -79,6 +67,20 @@ export class PostService {
       );
     }
   }
+  async getOnePost(id: number, qr?: QueryRunner): Promise<Post> {
+    const repository = this.getRepository(qr);
+
+    const post = await repository.findOne({
+      where: { id },
+      relations: ['images', 'author'],
+    });
+
+    if (!post) {
+      throw new NotFoundException(`Post with ID ${id} not found`);
+    }
+
+    return post;
+  }
 
   async createPost(
     createPostDto: CreatePostDto,
@@ -87,12 +89,25 @@ export class PostService {
   ) {
     const repository = this.getRepository(qr);
 
+    //console.log(createPostDto.boardName);
+    const boardName = createPostDto.boardName;
+
+    const board = await this.boardRepository.findOne({
+      where: { BoardTitle: boardName },
+    });
+    console.log(board.id);
+
+    const boardId = board.id;
+
     const post = repository.create({
       author: {
         id: userId,
       },
       ...createPostDto,
       images: [],
+      board: {
+        id: boardId,
+      },
     });
 
     const newPost = await repository.save(post);

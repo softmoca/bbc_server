@@ -10,10 +10,11 @@ import { PostExistsMiddleware } from './middleware/post-exists.middleware';
 import { PostService } from 'src/post/post.service';
 
 import { Image } from 'src/entities/Image';
+import { Board } from 'src/entities/Board.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Comment, Post, Image]),
+    TypeOrmModule.forFeature([Comment, Post, Image, Board]),
     CommonModule,
     PostModule,
   ],
