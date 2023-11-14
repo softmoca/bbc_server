@@ -4,5 +4,5 @@ import { BasePaginationDto } from 'src/common/dto/base-pagination.dto';
 export class PaginateBoardPostDto extends BasePaginationDto {
   @IsString()
   @IsOptional()
-  where__buildingName__i_like: string;
+  where__board__i_like: string;
 }

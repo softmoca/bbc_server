@@ -17,6 +17,7 @@ import { CommonService } from 'src/common/common.service';
 
 import { Image } from 'src/entities/Image';
 import { Board } from 'src/entities/Board.entity';
+import { PaginateBoardPostDto } from './dto/paginate-board.dto';
 
 @Injectable()
 export class PostService {
@@ -39,7 +40,7 @@ export class PostService {
     );
   }
 
-  async getBoardPost(dto: PaginatePostDto) {
+  async getBoardPost(dto: PaginateBoardPostDto) {
     return this.commonService.paginate(
       dto,
       this.postRepository,

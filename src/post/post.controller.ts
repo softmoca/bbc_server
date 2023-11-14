@@ -108,7 +108,7 @@ export class PostController {
 
   @Get('/getBoardPost')
   getBoardPost(@Query() query: PaginateBoardPostDto) {
-    //console.log(query);
+    // console.log(query);
 
     return this.postService.getBoardPost(query);
   }
