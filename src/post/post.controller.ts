@@ -94,10 +94,10 @@ export class PostController {
 
   @Post('random')
   @UseGuards(JwtAuthGuard)
-  async postPostsRandom(@CurrentUser() user: User) {
+  async postPostsRandom(@CurrentUser() user: User, @Query() boardId) {
     const userId = user.id;
-    console.log(userId);
-    await this.postService.generatePosts(userId);
+
+    await this.postService.generatePosts(userId, boardId);
 
     return true;
   }
@@ -131,7 +131,8 @@ export class PostController {
     const userId = user.id;
 
     //console.log(userId);
-    console.log(createPostDto);
+    //console.log(createPostDto);
+
     const post = await this.postService.createPost(createPostDto, userId, qr);
 
     for (let i = 0; i < createPostDto.images.length; i++) {

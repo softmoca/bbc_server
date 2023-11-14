@@ -53,17 +53,26 @@ export class PostService {
     return qr ? qr.manager.getRepository<Post>(Post) : this.postRepository;
   }
 
-  async generatePosts(userId: number) {
-    for (let i = 0; i < 10; i++) {
+  async generatePosts(userId: number, boardId) {
+    const bolardIID: number = parseInt(boardId.boardId);
+
+    console.log(bolardIID);
+    const post = await this.postRepository.findOne({
+      where: { board: { id: bolardIID } },
+    });
+
+    const buildingName = post.buildingName;
+
+    for (let i = 0; i < 5; i++) {
       await this.createPost(
         {
           postTitle: `임의로 생성된 포스트 제목 ${i}`,
           postContent: `임의로 생성된 포스트 내용 ${i}`,
-          buildingName: '참빛관',
+          buildingName: buildingName,
           chatRoomTitle: `임의로 생성된 채팅방 이름 ${i}`,
           images: [],
           board: {
-            id: 107,
+            id: boardId,
             BoardTitle: '',
             posts: [],
             updatedAt: undefined,
