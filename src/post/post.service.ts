@@ -62,7 +62,14 @@ export class PostService {
           buildingName: '참빛관',
           chatRoomTitle: `임의로 생성된 채팅방 이름 ${i}`,
           images: [],
-          boardName: `임의로 생성된 게시판 이름 ${i}`,
+          board: {
+            id: 107,
+            BoardTitle: '',
+            posts: [],
+            updatedAt: undefined,
+            createdAt: undefined,
+          },
+          boardName: undefined,
         },
         userId,
       );
@@ -91,14 +98,7 @@ export class PostService {
     const repository = this.getRepository(qr);
 
     //console.log(createPostDto.boardName);
-    const boardName = createPostDto.boardName;
-
-    const board = await this.boardRepository.findOne({
-      where: { BoardTitle: boardName },
-    });
-    console.log(board.id);
-
-    const boardId = board.id;
+    const boardId = createPostDto.board.id;
 
     const post = repository.create({
       author: {

@@ -69,6 +69,8 @@ export class CommonService {
       ...overrideFindOptions,
     });
 
+    //console.log(results);
+
     // 실제 반환된 페이지네이션 데이터 Data[];
     const data = results;
     // 마지막 데이터
@@ -143,8 +145,6 @@ export class CommonService {
           ...where,
           ...this.parseWhereFilter(key, value),
         };
-
-        //console.log(where);
       } else if (key.startsWith('order__')) {
         // order__로 시작하면 order 필터를 파싱한다.
         order = {
@@ -153,7 +153,7 @@ export class CommonService {
         };
       }
     }
-    console.log(where);
+
     return {
       where,
       order,
@@ -170,8 +170,6 @@ export class CommonService {
 
     // 예를들어 where__id__more_than 는 ['where', 'id', 'more_than'] 으로 나눌 수 있다.
     const split = key.split('__');
-
-    //console.log(split);
 
     if (split.length !== 2 && split.length !== 3) {
       throw new BadRequestException(
@@ -195,15 +193,11 @@ export class CommonService {
       // where__id__more_than의 경우  where는 버려도 되고 두번째 값은 필터할 키값, 세번째 값은 오퍼레이터 유틸리티
       // FILTER_MAPPER에 미리 정의해둔 값들로 field 값에 FILTER_MAPPER에서 해당되는 utility를 가져와 적용
       const [_, field, operator] = split;
-      //console.log(split);
+
       const values = value.toString().split(',');
 
       if (field == 'board') {
         where[field] = { id: parseInt(value) };
-
-        console.log('sds');
-        console.log(where[field]);
-        console.log('sds');
       } else {
         where[field] = FILTER_MAPPER[operator](
           values.length > 1 ? values : value,
@@ -211,7 +205,6 @@ export class CommonService {
       }
     }
 
-    //console.log(where);
     return where;
   }
 }
