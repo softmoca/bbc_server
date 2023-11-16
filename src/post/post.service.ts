@@ -57,18 +57,18 @@ export class PostService {
     const bolardIID: number = parseInt(boardId.boardId);
 
     console.log(bolardIID);
-    const post = await this.postRepository.findOne({
-      where: { board: { id: bolardIID } },
-    });
+    // const post = await this.postRepository.findOne({
+    //   where: { board: { id: bolardIID } },
+    // });
 
-    const buildingName = post.buildingName;
+    //const buildingName = post.buildingName;
 
     for (let i = 0; i < 5; i++) {
       await this.createPost(
         {
           postTitle: `임의로 생성된 포스트 제목 ${i}`,
           postContent: `임의로 생성된 포스트 내용 ${i}`,
-          buildingName: buildingName,
+          buildingName: 'd',
           chatRoomTitle: `임의로 생성된 채팅방 이름 ${i}`,
           images: [],
           board: {

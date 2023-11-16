@@ -62,14 +62,14 @@ export class CommonService {
   ) {
     const findOptions = this.composeFindOptions<T>(dto);
 
-    //console.log(findOptions);
+    console.log(findOptions);
 
     const results = await repository.find({
       ...findOptions,
       ...overrideFindOptions,
     });
 
-    //console.log(results);
+    console.log(results);
 
     // 실제 반환된 페이지네이션 데이터 Data[];
     const data = results;
@@ -204,7 +204,7 @@ export class CommonService {
         );
       }
     }
-    //console.log(where);
+
     return where;
   }
 }
