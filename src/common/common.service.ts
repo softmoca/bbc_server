@@ -69,8 +69,6 @@ export class CommonService {
       ...overrideFindOptions,
     });
 
-    console.log(results);
-
     // 실제 반환된 페이지네이션 데이터 Data[];
     const data = results;
     // 마지막 데이터

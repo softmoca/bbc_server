@@ -37,61 +37,6 @@ export class PostController {
     private readonly dataSource: DataSource,
   ) {}
 
-  @Get('/bima')
-  getBimaPost() {
-    console.log('aaaa');
-    return this.postService.getBimaPost();
-  }
-  @Get('/dormitory')
-  getDormitoryPost() {
-    return this.postService.getDormitoryPost();
-  }
-
-  @Get('/bokji')
-  getBokjiPost() {
-    return this.postService.getBokjiPost();
-  }
-
-  @Get('/centerLibrary')
-  getCenterLibraryPost() {
-    return this.postService.getCenterLibraryPost();
-  }
-
-  @Get('/chambit')
-  getChambitPost() {
-    return this.postService.getChambitPost();
-  }
-
-  @Get('/theater')
-  getTheaterPost() {
-    return this.postService.getTheaterPost();
-  }
-
-  @Get('/hanul')
-  getHanulPost() {
-    return this.postService.getHanulPost();
-  }
-
-  @Get('/saebit')
-  getSaebitPost() {
-    return this.postService.getSaebitPost();
-  }
-
-  @Get('/hwado')
-  getHwadoPost() {
-    return this.postService.getHwadoPost();
-  }
-
-  @Get('/okui')
-  getOkuiPost() {
-    return this.postService.getOkuiPost();
-  }
-
-  @Get('/nuri')
-  getNuriPost() {
-    return this.postService.getNuriPost();
-  }
-
   @Post('random')
   @UseGuards(JwtAuthGuard)
   async postPostsRandom(@CurrentUser() user: User, @Query() boardId) {

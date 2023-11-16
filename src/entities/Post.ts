@@ -22,10 +22,6 @@ export class Post extends BaseModel {
   @Column('int', { name: 'postLike', default: 0 })
   postLike: number;
 
-  @Length(1, 10)
-  @Column('varchar', { name: 'buildingName', nullable: true, length: 20 })
-  buildingName: string | null;
-
   @Length(1, 20)
   @Column('varchar', { name: 'chatRoomTitle', length: 20 })
   chatRoomTitle: string;

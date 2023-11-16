@@ -5,7 +5,6 @@ import { Post } from 'src/entities/Post';
 export class CreatePostDto extends PickType(Post, [
   'postTitle',
   'postContent',
-  'buildingName',
   'chatRoomTitle',
   'board',
 ]) {
