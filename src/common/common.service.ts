@@ -204,7 +204,7 @@ export class CommonService {
         );
       }
     }
-
+    //console.log(where);
     return where;
   }
 }

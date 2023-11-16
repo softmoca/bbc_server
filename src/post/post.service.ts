@@ -78,7 +78,7 @@ export class PostService {
             updatedAt: undefined,
             createdAt: undefined,
           },
-          boardName: undefined,
+          boardId: undefined,
         },
         userId,
       );
@@ -106,8 +106,8 @@ export class PostService {
   ) {
     const repository = this.getRepository(qr);
 
-    //console.log(createPostDto.boardName);
-    const boardId = createPostDto.board.id;
+    console.log(createPostDto.boardId);
+    const boardId = createPostDto.boardId;
 
     const post = repository.create({
       author: {
