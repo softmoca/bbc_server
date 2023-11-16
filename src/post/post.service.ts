@@ -68,7 +68,6 @@ export class PostService {
         {
           postTitle: `임의로 생성된 포스트 제목 ${i}`,
           postContent: `임의로 생성된 포스트 내용 ${i}`,
-          buildingName: 'd',
           chatRoomTitle: `임의로 생성된 채팅방 이름 ${i}`,
           images: [],
           board: {
@@ -127,12 +126,10 @@ export class PostService {
 
   async updatePost(id: number, updataPostDto: UpdatePostDto): Promise<Post> {
     const post = await this.getOnePost(id);
-    const { postTitle, postContent, buildingName, chatRoomTitle } =
-      updataPostDto;
+    const { postTitle, postContent, chatRoomTitle } = updataPostDto;
 
     post.postTitle = postTitle;
     post.postContent = postContent;
-    post.buildingName = buildingName;
     post.chatRoomTitle = chatRoomTitle;
 
     return await this.postRepository.save(post);
