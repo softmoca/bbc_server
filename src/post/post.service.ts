@@ -88,7 +88,7 @@ export class PostService {
 
     const post = await repository.findOne({
       where: { id },
-      relations: ['images', 'author'],
+      relations: ['images', 'author', 'board'],
     });
 
     if (!post) {
