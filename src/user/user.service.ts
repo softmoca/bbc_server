@@ -51,4 +51,13 @@ export class UserService {
       },
     });
   }
+
+  async getUserById(id: number) {
+    return this.userRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['posts', 'postComments'],
+    });
+  }
 }

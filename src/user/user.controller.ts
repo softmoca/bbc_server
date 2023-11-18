@@ -37,9 +37,11 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  guardTest(@CurrentUser() user: User) {
-    console.log(user);
+  async guardTest(@CurrentUser() user: User) {
+    const id = user.id;
 
-    return user;
+    const userData = await this.userService.getUserById(id);
+
+    return userData;
   }
 }
