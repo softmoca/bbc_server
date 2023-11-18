@@ -38,10 +38,6 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async guardTest(@CurrentUser() user: User) {
-    const id = user.id;
-
-    const userData = await this.userService.getUserById(id);
-
-    return userData;
+    return user;
   }
 }
