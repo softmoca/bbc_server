@@ -19,5 +19,5 @@ export abstract class BasePaginationDto {
 
   @IsNumber()
   @IsOptional()
-  take: number = 20;
+  take: number = 10;
 }
