@@ -5,6 +5,7 @@ import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { join } from 'path';
 import { Post } from './Post';
+import { User } from './User';
 
 export enum ImageModelType {
   postImage,
@@ -44,4 +45,10 @@ export class Image extends BaseModel {
     onUpdate: 'CASCADE',
   })
   post?: Post;
+
+  @ManyToOne((type) => User, (user) => user.images, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  user?: User;
 }

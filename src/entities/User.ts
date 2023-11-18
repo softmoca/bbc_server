@@ -6,6 +6,7 @@ import { Messages } from './messages.entity';
 import { Exclude } from 'class-transformer';
 import { Comment } from './Comment';
 import { Post } from './Post';
+import { Image } from './Image';
 
 @Entity('User', { schema: 'bbc_database' })
 export class User extends BaseModel {
@@ -57,4 +58,7 @@ export class User extends BaseModel {
 
   @OneToMany(() => Post, (post) => post.author, { cascade: true })
   posts: Post[];
+
+  @OneToMany((type) => Image, (image) => image.user, { cascade: true })
+  images: Image[];
 }
