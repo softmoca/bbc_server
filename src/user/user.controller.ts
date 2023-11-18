@@ -38,6 +38,8 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get()
   guardTest(@CurrentUser() user: User) {
+    console.log(user);
+
     return user;
   }
 }

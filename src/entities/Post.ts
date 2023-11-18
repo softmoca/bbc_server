@@ -16,9 +16,6 @@ export class Post extends BaseModel {
   @Column('varchar', { name: 'postContent', length: 300 })
   postContent: string;
 
-  @Column('boolean', { name: 'postAnonymous', default: true })
-  postAnonymous: boolean;
-
   @Column('int', { name: 'postLike', default: 0 })
   postLike: number;
 

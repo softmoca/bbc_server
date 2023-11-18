@@ -23,9 +23,6 @@ export class Comment extends BaseModel {
   @Column('varchar', { name: 'comment', length: 100 })
   commentContent: string;
 
-  @Column('boolean', { name: 'commentAnonymous', default: true })
-  commentAnonymous: boolean;
-
   @IsNumber()
   @Column('int', { name: 'commentLike', default: 0 })
   commentLike: number;

@@ -45,9 +45,6 @@ export class User extends BaseModel {
   })
   latitude: string | null;
 
-  @Column('text', { name: 'profileImage', nullable: true })
-  profileImage: string | null;
-
   @ManyToMany(() => Chats, (chat) => chat.users, { cascade: true })
   @JoinTable()
   chats: Chats[];
