@@ -28,7 +28,7 @@ export class User extends BaseModel {
   @Column('varchar', { name: 'password', length: 300 })
   password: string;
 
-  @Length(1, 30)
+  @IsNotEmpty()
   @Column('varchar', { name: 'nickName', length: 30 })
   nickName: string;
 

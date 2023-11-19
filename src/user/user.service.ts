@@ -68,14 +68,18 @@ export class UserService {
   async profileChange(updataUserDto: UpdateUserDto, userId: number) {
     const user = await this.userRepository.findOne({ where: { id: userId } });
 
-    console.log(user);
+    const { nickName } = updataUserDto;
+    user.nickName = nickName;
+    await this.userRepository.save(user);
 
-    await this.postImageService.createUserImage({
-      user,
-      path: updataUserDto.images[0],
-      order: 0,
-      type: ImageModelType.USER_IMAGE,
-    });
+    if (updataUserDto.images.length > 0) {
+      await this.postImageService.createUserImage({
+        user,
+        path: updataUserDto.images[0],
+        order: 0,
+        type: ImageModelType.USER_IMAGE,
+      });
+    }
 
     return this.getUserById(userId);
   }

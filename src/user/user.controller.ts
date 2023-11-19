@@ -53,12 +53,13 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch('/profileChange/:userId')
+  @Patch('/profileChange')
   async profileChange(
     @Body() updataUserDto: UpdateUserDto,
     @CurrentUser() user: User,
   ) {
     const userId = user.id;
+
     return this.userService.profileChange(updataUserDto, userId);
   }
 }
