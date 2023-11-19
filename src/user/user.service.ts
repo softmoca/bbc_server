@@ -5,12 +5,16 @@ import { Repository } from 'typeorm';
 
 import * as bcrypt from 'bcrypt';
 import { SignUpDto } from './dto/signUp.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { PostImageService } from 'src/post/image/image.service';
+import { ImageModelType } from 'src/entities/Image';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly postImageService: PostImageService,
   ) {}
 
   async signUp(signUpDto: SignUpDto) {
@@ -57,7 +61,22 @@ export class UserService {
       where: {
         id,
       },
-      relations: ['posts', 'postComments'],
+      relations: ['posts', 'postComments', 'images'],
     });
+  }
+
+  async profileChange(updataUserDto: UpdateUserDto, userId: number) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    console.log(user);
+
+    await this.postImageService.createUserImage({
+      user,
+      path: updataUserDto.images[0],
+      order: 0,
+      type: ImageModelType.USER_IMAGE,
+    });
+
+    return this.getUserById(userId);
   }
 }

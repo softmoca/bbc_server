@@ -75,9 +75,6 @@ export class PostController {
   ) {
     const userId = user.id;
 
-    //console.log(userId);
-    //console.log(createPostDto);
-
     const post = await this.postService.createPost(createPostDto, userId, qr);
 
     for (let i = 0; i < createPostDto.images.length; i++) {
@@ -86,7 +83,7 @@ export class PostController {
           post,
           path: createPostDto.images[i],
           order: i,
-          type: ImageModelType.postImage,
+          type: ImageModelType.POST_IMAGE,
         },
         qr,
       );

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Patch,
   Post,
   UseGuards,
   UseInterceptors,
@@ -16,6 +17,7 @@ import { User } from 'src/entities/User';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { SignUpDto } from './dto/signUp.dto';
 import { SignInDto } from './dto/signIn.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 @UseInterceptors(SuccessInterceptor)
@@ -48,5 +50,15 @@ export class UserController {
   @Get()
   async guardTest(@CurrentUser() user: User) {
     return user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('/profileChange/:userId')
+  async profileChange(
+    @Body() updataUserDto: UpdateUserDto,
+    @CurrentUser() user: User,
+  ) {
+    const userId = user.id;
+    return this.userService.profileChange(updataUserDto, userId);
   }
 }

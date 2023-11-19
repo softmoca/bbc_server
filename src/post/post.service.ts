@@ -105,7 +105,6 @@ export class PostService {
   ) {
     const repository = this.getRepository(qr);
 
-    console.log(createPostDto.boardId);
     const boardId = createPostDto.boardId;
 
     const post = repository.create({

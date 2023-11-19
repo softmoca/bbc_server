@@ -1,4 +1,7 @@
-import { POST_PUBLIC_IMAGE_PATH } from './../common/const/path.const';
+import {
+  POST_PUBLIC_IMAGE_PATH,
+  USER_PUBLIC_IMAGE_PATH,
+} from './../common/const/path.const';
 import { BaseModel } from './base.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { IsEnum, IsInt, IsOptional, IsString } from 'class-validator';
@@ -8,7 +11,8 @@ import { Post } from './Post';
 import { User } from './User';
 
 export enum ImageModelType {
-  postImage,
+  POST_IMAGE,
+  USER_IMAGE,
 }
 
 @Entity()
@@ -31,8 +35,11 @@ export class Image extends BaseModel {
   @Transform(({ value, obj }) => {
     // 만약에 포스트 이미지 타입이라면
     // 이렇게 매핑하기
-    if (obj.type === ImageModelType.postImage) {
+    if (obj.type === ImageModelType.POST_IMAGE) {
       return `/${join(POST_PUBLIC_IMAGE_PATH, value)}`;
+    }
+    if (obj.type === ImageModelType.USER_IMAGE) {
+      return `${(join(USER_PUBLIC_IMAGE_PATH), value)}`;
     } else {
       return value;
     }

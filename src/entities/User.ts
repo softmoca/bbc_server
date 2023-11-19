@@ -1,4 +1,10 @@
-import { IsEmail, Length } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  Length,
+  isString,
+} from 'class-validator';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { BaseModel } from './base.entity';
 import { Chats } from './chats.entity';
@@ -59,6 +65,7 @@ export class User extends BaseModel {
   @OneToMany(() => Post, (post) => post.author, { cascade: true })
   posts: Post[];
 
+  @IsNotEmpty()
   @OneToMany((type) => Image, (image) => image.user, { cascade: true })
   images: Image[];
 }
