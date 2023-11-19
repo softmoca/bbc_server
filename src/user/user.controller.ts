@@ -42,7 +42,7 @@ export class UserController {
   async getUserData(@CurrentUser() user: User) {
     const id = user.id;
     const userData = await this.userService.getUserById(id);
-
+    console.log(userData);
     return userData;
   }
 

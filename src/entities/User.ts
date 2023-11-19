@@ -1,6 +1,7 @@
 import {
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Length,
   isString,
@@ -28,7 +29,7 @@ export class User extends BaseModel {
   @Column('varchar', { name: 'password', length: 300 })
   password: string;
 
-  @IsNotEmpty()
+  @IsString()
   @Column('varchar', { name: 'nickName', length: 30 })
   nickName: string;
 
