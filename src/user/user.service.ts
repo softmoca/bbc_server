@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/User';
 import { Repository } from 'typeorm';
@@ -8,6 +12,7 @@ import { SignUpDto } from './dto/signUp.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PostImageService } from 'src/post/image/image.service';
 import { ImageModelType } from 'src/entities/Image';
+import { CheckEmailDto } from './dto/checkEmail.dto';
 
 @Injectable()
 export class UserService {
@@ -46,6 +51,20 @@ export class UserService {
     });
 
     return user;
+  }
+
+  async checkEmailName(chekcEmailDto: CheckEmailDto) {
+    const { email } = chekcEmailDto;
+
+    const isUserIdExist = await this.userRepository.findOne({
+      where: { email },
+    });
+
+    if (isUserIdExist) {
+      throw new BadRequestException('이미 사용중인 이메일 입니다.');
+    }
+
+    return email;
   }
 
   async getUserByEmail(email: string) {

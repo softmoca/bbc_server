@@ -18,6 +18,7 @@ import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { SignUpDto } from './dto/signUp.dto';
 import { SignInDto } from './dto/signIn.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CheckEmailDto } from './dto/checkEmail.dto';
 
 @Controller('user')
 @UseInterceptors(SuccessInterceptor)
@@ -44,6 +45,11 @@ export class UserController {
     const userData = await this.userService.getUserById(id);
     console.log(userData);
     return userData;
+  }
+
+  @Post('checkEmail')
+  async checkEmailName(@Body() chekcEmailDto: CheckEmailDto) {
+    return this.userService.checkEmailName(chekcEmailDto);
   }
 
   @UseGuards(JwtAuthGuard)
