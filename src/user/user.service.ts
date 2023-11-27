@@ -13,6 +13,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PostImageService } from 'src/post/image/image.service';
 import { ImageModelType } from 'src/entities/Image';
 import { CheckEmailDto } from './dto/checkEmail.dto';
+import { CheckNickNameDto } from './dto/checkNickName.dto';
 
 @Injectable()
 export class UserService {
@@ -53,7 +54,7 @@ export class UserService {
     return user;
   }
 
-  async checkEmailName(chekcEmailDto: CheckEmailDto) {
+  async checkEmail(chekcEmailDto: CheckEmailDto) {
     const { email } = chekcEmailDto;
 
     const isUserIdExist = await this.userRepository.findOne({
@@ -65,6 +66,20 @@ export class UserService {
     }
 
     return email;
+  }
+
+  async checkNickName(checkNickNameDto: CheckNickNameDto) {
+    const { nickName } = checkNickNameDto;
+
+    const isUserIdExist = await this.userRepository.findOne({
+      where: { nickName },
+    });
+
+    if (isUserIdExist) {
+      throw new BadRequestException('이미 사용중인 닉네임 입니다.');
+    }
+
+    return nickName;
   }
 
   async getUserByEmail(email: string) {

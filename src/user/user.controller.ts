@@ -19,6 +19,7 @@ import { SignUpDto } from './dto/signUp.dto';
 import { SignInDto } from './dto/signIn.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CheckEmailDto } from './dto/checkEmail.dto';
+import { CheckNickNameDto } from './dto/checkNickName.dto';
 
 @Controller('user')
 @UseInterceptors(SuccessInterceptor)
@@ -48,8 +49,13 @@ export class UserController {
   }
 
   @Post('checkEmail')
-  async checkEmailName(@Body() chekcEmailDto: CheckEmailDto) {
-    return this.userService.checkEmailName(chekcEmailDto);
+  async checkEmail(@Body() chekcEmailDto: CheckEmailDto) {
+    return this.userService.checkEmail(chekcEmailDto);
+  }
+
+  @Post('checkNickName')
+  async checkNickName(@Body() checkNickNameDto: CheckNickNameDto) {
+    return this.userService.checkNickName(checkNickNameDto);
   }
 
   @UseGuards(JwtAuthGuard)
