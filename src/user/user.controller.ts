@@ -50,6 +50,7 @@ export class UserController {
 
   @Post('checkEmail')
   async checkEmail(@Body() chekcEmailDto: CheckEmailDto) {
+    console.log('d');
     return this.userService.checkEmail(chekcEmailDto);
   }
 

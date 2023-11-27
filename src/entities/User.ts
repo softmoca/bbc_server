@@ -1,11 +1,4 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Length,
-  isString,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { BaseModel } from './base.entity';
 import { Chats } from './chats.entity';
@@ -17,8 +10,7 @@ import { Image } from './Image';
 
 @Entity('User', { schema: 'bbc_database' })
 export class User extends BaseModel {
-  @Length(1, 30)
-  @IsEmail()
+  @IsEmail({}, { message: '이메일 형식으로 입력 해주세요 !' })
   @Column('varchar', { name: 'email', length: 30 })
   email: string;
 
@@ -29,7 +21,8 @@ export class User extends BaseModel {
   @Column('varchar', { name: 'password', length: 300 })
   password: string;
 
-  @IsString()
+  @IsNotEmpty({ message: '문자을 입력 하세요 !' })
+  @IsString({ message: '문자을 입력 하세요 !' })
   @Column('varchar', { name: 'nickName', length: 30 })
   nickName: string;
 

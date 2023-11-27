@@ -62,7 +62,7 @@ export class UserService {
     });
 
     if (isUserIdExist) {
-      throw new BadRequestException('이미 사용중인 이메일 입니다.');
+      throw new BadRequestException(['이미 사용중인 이메일 입니다.']);
     }
 
     return email;
@@ -76,7 +76,7 @@ export class UserService {
     });
 
     if (isUserIdExist) {
-      throw new BadRequestException('이미 사용중인 닉네임 입니다.');
+      throw new BadRequestException(['이미 사용중인 닉네임 입니다.']);
     }
 
     return nickName;
