@@ -44,7 +44,7 @@ import { Board } from './entities/Board.entity';
       database: process.env.DB_DATABASE,
       entities: [User, Post, Comment, Image, Chats, Messages, Board],
       synchronize: true,
-      // timezone: 'Asia/Seoul',
+      timezone: '-09:00',
       //logging: true,
       charset: 'utf8mb4',
     }),

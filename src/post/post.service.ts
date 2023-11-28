@@ -88,8 +88,17 @@ export class PostService {
 
     const post = await repository.findOne({
       where: { id },
-      relations: ['images', 'author', 'board'],
+      relations: ['images', 'author', 'board', 'author.images'],
     });
+
+    post.author.images = post.author.images.filter(
+      (image) => image.user?.id === post.author.id,
+    );
+
+    const authorProfilePath =
+      post.author.images[post.author.images.length - 1].path;
+
+    post['authorProfilePath'] = authorProfilePath;
 
     if (!post) {
       throw new NotFoundException(`Post with ID ${id} not found`);

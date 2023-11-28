@@ -56,6 +56,7 @@ export class Image extends BaseModel {
   @ManyToOne((type) => User, (user) => user.images, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
+    eager: true,
   })
   user?: User;
 }
