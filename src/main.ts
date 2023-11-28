@@ -28,6 +28,11 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new HttpExceptionFilter());
   const port = process.env.PORT;
+
+  // console.log(new Date());
+  // console.log(Date());
+
+  // console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
   await app.listen(port);
 }
 bootstrap();
