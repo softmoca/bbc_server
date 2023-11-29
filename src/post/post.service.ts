@@ -91,12 +91,13 @@ export class PostService {
       relations: ['images', 'author', 'board', 'author.images'],
     });
 
+    console.log('d');
     post.author.images = post.author.images.filter(
       (image) => image.user?.id === post.author.id,
     );
 
     const authorProfilePath =
-      post.author.images[post.author.images.length - 1].path;
+      post?.author?.images[post?.author?.images?.length - 1]?.path;
 
     post['authorProfilePath'] = authorProfilePath;
 
