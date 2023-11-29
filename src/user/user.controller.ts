@@ -36,6 +36,7 @@ export class UserController {
 
   @Post('/localSignIn')
   async localSignIn(@Body() signInDto: SignInDto) {
+    console.log('dd');
     return this.authService.localSignIn(signInDto);
   }
 
