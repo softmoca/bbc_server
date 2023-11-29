@@ -89,7 +89,7 @@ export class PostController {
       );
     }
 
-    return this.postService.getOnePost(post.id, qr);
+    return;
   }
 
   @UseGuards(IsPostMineGuard)
