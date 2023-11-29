@@ -57,6 +57,8 @@ export class CommentController {
     @CurrentUser() user: User,
     @QueryRunner() qr: QR,
   ) {
+    console.log('dfd');
+
     const newComment = await this.commentService.createComment(
       createPostDto,
       postId,
